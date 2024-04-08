@@ -1,0 +1,39 @@
+<header class="container">
+    <nav class="bg-yellow-700 text-white shadow-md flex justify-between items-center p-4">
+        <a href="{{ path('home') }}" class="text-2xl font-bold text-lime-200">
+            Laimes maize
+        </a>
+        <ul class="flex gap-4">
+            <li>
+                <a
+                    href="{{ path('home') }}"
+                    class="{{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Sākums</a>
+            </li>
+            <li>
+                <a
+                    href="{{ path('about_us') }}"
+                    class="{{ app.request.attributes.get('_route') == 'about_us' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Par mums</a>
+            </li>
+            <li>
+                <a
+                    href="{{ path('news') }}"
+                    class="{{ app.request.attributes.get('_route') == 'news' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Jaunumi</a>
+            </li>
+            <li>
+                <a
+                    href="{{ path('offers') }}"
+                    class="{{ app.request.attributes.get('_route') == 'offers' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Piedāvājumi</a>
+            </li>
+            <li>
+                <a
+                    href="{{ path('contacts') }}"
+                    class="{{ app.request.attributes.get('_route') == 'contacts' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Kontakti</a>
+            </li>
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,8 @@
+twig:
+    file_name_pattern: '*.twig'
+    globals:
+        footer_data: '@App\Service\FooterDataService'
+
+when@test:
+    twig:
+        strict_variables: true
