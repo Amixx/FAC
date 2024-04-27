@@ -1,1 +1,1 @@
-docker exec -it symfony-docker-php-1 bash
+docker exec -it t-ssr-php-1 bash

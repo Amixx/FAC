@@ -18,7 +18,7 @@ suffixes=(
 )
 
 base_url="https://thesis-project.local.io"
-if [ "$type" == "https" ]; then
+if [ "$type" == "spa" ] || [ "$type" == "m-ssr" ]; then
   base_url+=":8000/"
 else
   base_url+=":443/"
@@ -28,7 +28,7 @@ run_lighthouse() {
   local suffix="$1"
   url="$base_url$suffix"
   echo "Running Lighthouse for URL: $url"
-  npx -y lighthouse "$url" --preset=experimental --view-distance=3 --emulated-form-factor=mobile,desktop --output-path=./data/"$type"/lighthouse-results-"$suffix".html
+  npx -y lighthouse "$url" --preset=desktop --output-path=./data/"$type"/lighthouse-results-"$suffix".html --only-categories=performance
 }
 
 # Run Lighthouse script for each URL in parallel

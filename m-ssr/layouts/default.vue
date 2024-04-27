@@ -4,7 +4,7 @@
   >
     <PageHeader />
     <main class="bg-white container">
-      <router-view />
+      <slot></slot>
     </main>
     <PageFooter :data="footerData" />
   </div>

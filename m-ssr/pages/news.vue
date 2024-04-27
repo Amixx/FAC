@@ -43,5 +43,16 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ data: NewsPage }>()
+const route = useRoute()
+
+const data = computed(() => route.meta.data as NewsPage)
+
+useHead({
+  title: data.value.title,
+  meta: [
+    { name: 'title', content: data.value.title },
+    { name: 'description', content: data.value.metaDescription },
+    { name: 'keywords', content: data.value.metaKeywords },
+  ],
+})
 </script>

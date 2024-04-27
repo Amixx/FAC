@@ -34,4 +34,12 @@ export default defineNuxtConfig({
       })
     },
   },
+  app: {
+    head: {
+      htmlAttrs: { lang: 'lv' },
+    },
+  },
+  nitro: {
+    compressPublicAssets: true,
+  },
 })
