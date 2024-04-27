@@ -1,0 +1,1 @@
+docker exec -it vue-app /bin/sh
