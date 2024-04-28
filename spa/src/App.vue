@@ -1,8 +1,7 @@
 <template>
-  <Layout :footer-data="data.footer" />
+  <Layout />
 </template>
 
 <script setup lang="ts">
 import Layout from './components/layout/Layout.vue'
-import data from './data/data.json'
 </script>

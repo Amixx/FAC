@@ -19,7 +19,10 @@
       </div>
     </div>
     <section class="px-6 py-12">
-      <div class="gap-4 grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2">
+      <div
+        v-if="'contact_info' in data"
+        class="gap-4 grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2"
+      >
         <div class="bg-white overflow-hidden p-6 rounded shadow-lg">
           <h2 class="font-bold mb-2 text-xl">E-pasts</h2>
           <p class="text-base text-gray-700">
@@ -57,16 +60,5 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
-
-const data = computed(() => route.meta.data as ContactsPage)
-
-useHead({
-  title: data.value.title,
-  meta: [
-    { name: 'title', content: data.value.title },
-    { name: 'description', content: data.value.metaDescription },
-    { name: 'keywords', content: data.value.metaKeywords },
-  ],
-})
+defineProps<{ data: Page | ContactsPage }>()
 </script>

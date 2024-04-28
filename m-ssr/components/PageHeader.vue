@@ -3,45 +3,43 @@
     <nav
       class="bg-yellow-700 flex items-center justify-between p-4 shadow-md text-white"
     >
-      <router-link
-        class="font-bold text-2xl text-lime-200"
-        :to="{ name: 'index' }"
-        >Laimes maize</router-link
+      <NuxtLink class="font-bold text-2xl text-lime-200" :to="{ name: 'index' }"
+        >Laimes maize</NuxtLink
       >
       <ul class="flex gap-4">
         <li>
-          <router-link
+          <NuxtLink
             class="hover:text-lime-200 hover:underline text-white"
             :to="{ name: 'index' }"
-            >Sākums</router-link
+            >Sākums</NuxtLink
           >
         </li>
         <li>
-          <router-link
+          <NuxtLink
             class="hover:text-lime-200 hover:underline text-white"
             :to="{ name: 'about-us' }"
-            >Par mums</router-link
+            >Par mums</NuxtLink
           >
         </li>
         <li>
-          <router-link
+          <NuxtLink
             class="hover:text-lime-200 hover:underline text-white"
             :to="{ name: 'news' }"
-            >Jaunumi</router-link
+            >Jaunumi</NuxtLink
           >
         </li>
         <li>
-          <router-link
+          <NuxtLink
             class="hover:text-lime-200 hover:underline text-white"
             :to="{ name: 'offers' }"
-            >Piedāvājumi</router-link
+            >Piedāvājumi</NuxtLink
           >
         </li>
         <li>
-          <router-link
+          <NuxtLink
             class="hover:text-lime-200 hover:underline text-white"
             :to="{ name: 'contacts' }"
-            >Kontakti</router-link
+            >Kontakti</NuxtLink
           >
         </li>
       </ul>
