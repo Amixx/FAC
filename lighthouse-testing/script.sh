@@ -7,6 +7,12 @@ fi
 
 type="$1"
 
+case "$type" in
+  t-ssr|spa|m-ssr|ssg|hda) ;;
+  *) echo "Error: Invalid type. Supported types are t-ssr, spa, m-ssr, ssg, or hda." >&2
+     exit 1 ;;
+esac
+
 # Define suffixes
 suffixes=(
   ""
@@ -17,8 +23,11 @@ suffixes=(
   "contacts"
 )
 
+# Create directory if not exists
+mkdir -p "./data/$type"
+
 base_url="https://thesis-project.local.io"
-if [ "$type" == "spa" ] || [ "$type" == "m-ssr" ]; then
+if [ "$type" == "spa" ] || [ "$type" == "m-ssr" ] || [ "$type" == "ssg" ]; then
   base_url+=":8000/"
 else
   base_url+=":443/"
