@@ -8,12 +8,10 @@ export default defineNuxtConfig({
   },
   postcss: { plugins: { tailwindcss: {}, autoprefixer: {} } },
   css: ['~/assets/css/main.css'],
-  vite: { vue: { script: { propsDestructure: true } } },
+  vue: { propsDestructure: true },
   typescript: { typeCheck: true },
   app: {
-    head: {
-      htmlAttrs: { lang: 'lv' },
-    },
+    head: { htmlAttrs: { lang: 'lv' } },
   },
   nitro: {
     compressPublicAssets: true,
