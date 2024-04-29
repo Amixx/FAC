@@ -4,7 +4,8 @@
       <img
         alt="hero"
         class="absolute h-full inset-0 object-cover w-full"
-        :src="data.images[0]"
+        :src="data.images[0].mob"
+        :srcset="`${data.images[0].mob} 320w, ${data.images[0].desk}`"
       />
       <div class="absolute bg-black inset-0 opacity-70"></div>
       <div

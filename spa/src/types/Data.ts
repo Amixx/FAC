@@ -9,13 +9,18 @@ type Page = {
   metaDescription: string
   metaKeywords: string
   content: string[] | string
-  images: string[]
+  images: Image[]
+}
+
+type Image = {
+  desk: string
+  mob: string
 }
 
 type NewsItem = {
   title: string
   date: string
-  image: string
+  image: Image
   description: string
 }
 
@@ -23,7 +28,7 @@ type Offer = {
   title: string
   description: string
   starting_price: string
-  image: string
+  image: Image
 }
 
 type ContactInfo = {

@@ -10,7 +10,11 @@
 
 {% block content %}
     <div class="relative">
-        <img class="absolute inset-0 h-full w-full object-cover" src="{{ data.images[0] }}" alt="hero">
+        <img
+                class="absolute inset-0 h-full w-full object-cover"
+                src="{{ data.images[0].mob }}"
+                srcset="{{ data.images[0].mob }} 360w, {{ data.images[0].desk }}"
+                alt="hero">
         <div class="absolute inset-0 bg-black opacity-70"></div>
         <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
             <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">{{ data.title }}</h1>
@@ -23,7 +27,11 @@
             {% for offer in data.offers %}
                 <div class="rounded overflow-hidden shadow-lg flex flex-col">
                     <div class="h-40 overflow-hidden relative">
-                        <img class="w-full object-cover h-full" src="{{ offer.image }}" alt="{{ offer.title }}">
+                        <img
+                                class="w-full object-cover h-full"
+                                src="{{ offer.image.mob }}"
+                                srcset="{{ offer.image.mob }} 360w, {{ offer.image.desk }}"
+                                alt="{{ offer.title }}">
                         <div class="absolute inset-0 bg-black opacity-70"></div>
                         <div class="font-bold text-xl text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ offer.title }}</div>
                     </div>

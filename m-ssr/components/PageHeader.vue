@@ -6,7 +6,7 @@
       <NuxtLink class="font-bold text-2xl text-lime-200" :to="{ name: 'index' }"
         >Laimes maize</NuxtLink
       >
-      <ul class="flex gap-4">
+      <ul class="flex flex-wrap gap-4">
         <li>
           <NuxtLink
             class="hover:text-lime-200 hover:underline text-white"

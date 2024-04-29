@@ -28,7 +28,11 @@ run_lighthouse() {
   local suffix="$1"
   url="$base_url$suffix"
   echo "Running Lighthouse for URL: $url"
-  npx -y lighthouse "$url" --preset=desktop --output-path=./data/"$type"/lighthouse-results-"$suffix".html --only-categories=performance
+  npx -y lighthouse "$url" \
+   --output-path=./data/"$type"/lighthouse-results-"$suffix".html \
+   --only-categories=performance
+#   --throttling.rttMs=80 \
+#   --throttling.throughputKbps=4096
 }
 
 # Run Lighthouse script for each URL in parallel

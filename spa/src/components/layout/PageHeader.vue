@@ -8,7 +8,7 @@
         :to="{ name: 'HOME' }"
         >Laimes maize</router-link
       >
-      <ul class="flex gap-4">
+      <ul class="flex flex-wrap gap-4">
         <li>
           <router-link
             class="hover:text-lime-200 hover:underline text-white"
