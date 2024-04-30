@@ -36,12 +36,42 @@
               class="bg-white dark:bg-gray-800 pl-4"
             >
               <td
-                v-for="(text, j) in subItem"
+                v-for="(audit, j) in subItem"
                 :key="j"
                 class="border border-gray-200 first:dark:text-white first:font-medium first:text-gray-900 first:whitespace-nowrap px-3 py-2"
                 scope="row"
               >
-                {{ text }}
+                <template v-if="typeof audit === 'object'">
+                  {{ audit.displayValue }}
+                </template>
+                <template v-else>
+                  {{ audit }}
+                </template>
+              </td>
+            </tr>
+            <tr v-if="item.items.length > 1">
+              <td
+                class="border border-gray-200 dark:text-white font-medium px-3 py-2 text-gray-900 whitespace-nowrap"
+                scope="row"
+              >
+                Average
+              </td>
+              <td
+                v-for="i in item.items.length"
+                :key="i"
+                class="border border-gray-200 dark:text-white px-3 py-2 text-gray-900 whitespace-nowrap"
+                scope="row"
+              >
+                {{
+                  parseFloat(
+                    (
+                      item.items.reduce(
+                        (sum, audit) => sum + audit[i].numericValue,
+                        0,
+                      ) / item.items.length
+                    ).toFixed(4),
+                  )
+                }}
               </td>
             </tr>
           </tbody>
@@ -91,11 +121,11 @@ const allArchitectureData = {
 }
 
 const inpData = {
-  tSsr: '30 ms',
-  hda: '40 ms',
-  spa: '60 ms',
-  mSsr: '30 ms',
-  ssg: '30 ms',
+  tSsr: { numericValue: 30, displayValue: '30 ms' },
+  hda: { numericValue: 40, displayValue: '40 ms' },
+  spa: { numericValue: 60, displayValue: '60 ms' },
+  mSsr: { numericValue: 30, displayValue: '30 ms' },
+  ssg: { numericValue: 30, displayValue: '30 ms' },
 }
 
 const structuredAudits = [
@@ -117,7 +147,7 @@ const structuredAudits = [
       ...Object.keys(allArchitectureData).map(
         (key) =>
           allArchitectureData[key as keyof typeof allArchitectureData][index]
-            .audits[auditId].displayValue,
+            .audits[auditId],
       ),
     ]),
   })),
