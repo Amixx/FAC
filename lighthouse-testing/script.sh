@@ -8,8 +8,8 @@ fi
 type="$1"
 
 case "$type" in
-  t-ssr|spa|m-ssr|ssg|hda) ;;
-  *) echo "Error: Invalid type. Supported types are t-ssr, spa, m-ssr, ssg, or hda." >&2
+  t-ssr|spa|m-ssr|ssg|hda|all) ;;
+  *) echo "Error: Invalid type. Supported types are t-ssr, spa, m-ssr, ssg, hda, or all." >&2
      exit 1 ;;
 esac
 
@@ -23,19 +23,26 @@ suffixes=(
   "contacts"
 )
 
-# Create directory if not exists
-mkdir -p "./results-data/$type"
-
 base_url="https://thesis-project.local.io"
-if [ "$type" == "spa" ] || [ "$type" == "m-ssr" ] || [ "$type" == "ssg" ]; then
-  base_url+=":8000/"
-else
-  base_url+=":443/"
-fi
 
 run_lighthouse() {
-  local suffix="$1"
-  url="$base_url$suffix"
+  local type="$1"
+  local suffix="$2"
+
+  url="$base_url"
+  if [ "$type" == "spa" ]; then
+    url+=":8000/"
+  elif [ "$type" == "m-ssr" ]; then
+    url+=":8001/"
+  elif [ "$type" == "ssg" ]; then
+    url+=":8002/"
+  else
+    url+=":443/"
+  fi
+
+  mkdir -p "./results-data/$type"
+
+  url="$url$suffix"
   echo "Running Lighthouse for URL: $url"
   npx -y lighthouse "$url" \
    --output=json \
@@ -45,10 +52,19 @@ run_lighthouse() {
 #   --throttling.throughputKbps=4096
 }
 
-# Run Lighthouse script for each URL in parallel
-for suffix in "${suffixes[@]}"; do
-  run_lighthouse "$suffix"
-done
+if [ "$type" == "all" ]; then
+  # Run Lighthouse script for all types
+  for current_type in "t-ssr" "spa" "m-ssr" "ssg" "hda"; do
+    for suffix in "${suffixes[@]}"; do
+      run_lighthouse "$current_type" "$suffix"
+    done
+  done
+else
+  # Run Lighthouse script for the specified type
+  for suffix in "${suffixes[@]}"; do
+    run_lighthouse "$type" "$suffix"
+  done
+fi
 
 # Wait for all background processes to finish
 wait

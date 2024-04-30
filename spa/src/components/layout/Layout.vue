@@ -5,15 +5,11 @@
     <PageHeader />
     <main class="bg-white container min-h-[calc(100vh-64px)]">
       <router-view v-if="!pageDataLoading && pageData" :data="pageData" />
-      <Spinner v-else-if="pageDataLoading" />
-      <p v-else class="text-red-700">Notika neparedzēta kļūda!</p>
     </main>
     <PageFooter
       v-if="!footerDataLoading && globalData"
       :data="globalData.footer"
     />
-    <Spinner v-else-if="footerDataLoading" />
-    <p v-else class="text-red-700">Notika neparedzēta kļūda!</p>
   </div>
 </template>
 
@@ -23,7 +19,6 @@ import PageFooter from './PageFooter.vue'
 import DataRepository from '@/repositories/DataRepository'
 import { ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import Spinner from '@/components/Spinner.vue'
 import { routeNameToPageIndex } from '@/router'
 import { useHead } from '@unhead/vue'
 

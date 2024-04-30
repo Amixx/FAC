@@ -1,1 +1,1 @@
-docker exec -it vue-app /bin/sh
+docker exec -it docker-spa-nginx-1 /bin/sh

@@ -5,8 +5,6 @@
       :key="route.path"
       :data="pageData"
     />
-    <Spinner v-else-if="pageDataLoading" />
-    <p v-else class="text-red-700">Notika neparedzēta kļūda!</p>
   </NuxtLayout>
 </template>
 

@@ -2,9 +2,9 @@
 <html lang="lv">
 <head>
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" crossorigin href="{{ asset('styles/app.css') }}">
     {% block meta %}{% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 </head>
 <body class="min-h-screen bg-slate-100 flex items-center justify-center flex-col max-w-screen-2xl m-auto">
 {% include 'layout/header.html.twig' %}

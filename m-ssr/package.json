@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "start.sh"
+    "start": "start-ssr.sh"
   },
   "dependencies": {
     "@unhead/vue": "^1.9.5",

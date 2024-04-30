@@ -10,14 +10,10 @@
       v-if="!footerDataLoading && globalData"
       :data="globalData.footer"
     />
-    <Spinner v-else-if="footerDataLoading" />
-    <p v-else class="text-red-700">Notika neparedzēta kļūda!</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import Spinner from '~/components/Spinner.vue'
-
 const { data: globalData, pending: footerDataLoading } = await useFetch<
   Exclude<Data, 'pages'>
 >('/global', {
