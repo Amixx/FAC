@@ -24,7 +24,7 @@ suffixes=(
 )
 
 # Create directory if not exists
-mkdir -p "./data/$type"
+mkdir -p "./results-data/$type"
 
 base_url="https://thesis-project.local.io"
 if [ "$type" == "spa" ] || [ "$type" == "m-ssr" ] || [ "$type" == "ssg" ]; then
@@ -38,7 +38,8 @@ run_lighthouse() {
   url="$base_url$suffix"
   echo "Running Lighthouse for URL: $url"
   npx -y lighthouse "$url" \
-   --output-path=./data/"$type"/lighthouse-results-"$suffix".html \
+   --output=json \
+   --output-path=./results-data/"$type"/"${suffix:-home}".json \
    --only-categories=performance
 #   --throttling.rttMs=80 \
 #   --throttling.throughputKbps=4096
