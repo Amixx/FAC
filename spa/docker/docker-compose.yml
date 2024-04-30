@@ -7,6 +7,4 @@ services:
       - ./certs:/etc/ssl/private
       - ../dist:/var/www/html/spa
       - ../../m-ssr/dist:/var/www/html/ssg
-    ports:
-      - "8000:8000" # SPA
-      - "8002:8002" # SSG
+    network_mode: host
