@@ -90,26 +90,44 @@ const allArchitectureData = {
   ssg: [ssgHome, ssgAboutUs, ssgNews, ssgOffers, ssgContacts],
 }
 
-const structuredAudits = (
-  [
-    'first-contentful-paint',
-    'largest-contentful-paint',
-    'total-blocking-time',
-    'cumulative-layout-shift',
-    // 'speed-index',
-    // other metrics
-    'interactive',
-  ] as const
-).map((auditId) => ({
-  audit: hdaHome.audits[auditId],
-  headers: Object.keys(allArchitectureData),
-  items: allArchitectureData['hda'].map((_, index) => [
-    '/' + allArchitectureData['hda'][index].requestedUrl.split('/').pop(),
-    ...Object.keys(allArchitectureData).map(
-      (key) =>
-        allArchitectureData[key as keyof typeof allArchitectureData][index]
-          .audits[auditId].displayValue,
-    ),
-  ]),
-}))
+const inpData = {
+  tSsr: '30 ms',
+  hda: '60 ms',
+  spa: '60 ms',
+  mSsr: '30 ms',
+  ssg: '30 ms',
+}
+
+const structuredAudits = [
+  ...(
+    [
+      'first-contentful-paint',
+      'largest-contentful-paint',
+      'total-blocking-time',
+      'cumulative-layout-shift',
+      // 'speed-index',
+      // other metrics
+      'interactive',
+    ] as const
+  ).map((auditId) => ({
+    audit: hdaHome.audits[auditId],
+    headers: Object.keys(allArchitectureData),
+    items: allArchitectureData['hda'].map((_, index) => [
+      '/' + allArchitectureData['hda'][index].requestedUrl.split('/').pop(),
+      ...Object.keys(allArchitectureData).map(
+        (key) =>
+          allArchitectureData[key as keyof typeof allArchitectureData][index]
+            .audits[auditId].displayValue,
+      ),
+    ]),
+  })),
+  {
+    audit: {
+      id: 'interaction-to-next-paint',
+      title: 'Interaction to next paint',
+    },
+    headers: Object.keys(allArchitectureData),
+    items: [['', ...Object.values(inpData)]],
+  },
+]
 </script>
