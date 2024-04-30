@@ -92,7 +92,7 @@ const allArchitectureData = {
 
 const inpData = {
   tSsr: '30 ms',
-  hda: '60 ms',
+  hda: '40 ms',
   spa: '60 ms',
   mSsr: '30 ms',
   ssg: '30 ms',

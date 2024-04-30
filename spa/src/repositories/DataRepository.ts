@@ -1,4 +1,4 @@
-const baseUrl = 'https://thesis-project.local.io/api'
+const baseUrl = 'https://thesis-project.local.io/api/json'
 
 export default {
   getGlobalData: (): Promise<Exclude<Data, 'pages'>> =>

@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api')]
-class DataController extends AbstractController
+#[Route('/api/json')]
+class JsonApiController extends AbstractController
 {
     private array $data;
 
