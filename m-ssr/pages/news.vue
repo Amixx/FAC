@@ -5,7 +5,7 @@
         alt="hero"
         class="absolute h-full inset-0 object-cover w-full"
         :src="data.images[0].mob"
-        :srcset="`${data.images[0].mob} 320w, ${data.images[0].desk}`"
+        :srcset="`${data.images[0].mob} 360w, ${data.images[0].desk}`"
       />
       <div class="absolute bg-black inset-0 opacity-70"></div>
       <div
@@ -30,7 +30,7 @@
           :alt="item.title"
           class="h-64 object-cover rounded w-full"
           :src="item.image.mob"
-          :srcset="`${item.image.mob} 320w, ${item.image.desk}`"
+          :srcset="`${item.image.mob} 360w, ${item.image.desk}`"
         />
       </div>
       <div class="p-4 pt-0 sm:w-1/2 w-full">

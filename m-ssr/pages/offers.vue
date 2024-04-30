@@ -5,7 +5,7 @@
         alt="hero"
         class="absolute h-full inset-0 object-cover w-full"
         :src="data.images[0].mob"
-        :srcset="`${data.images[0].mob} 320w, ${data.images[0].desk}`"
+        :srcset="`${data.images[0].mob} 360w, ${data.images[0].desk}`"
       />
       <div class="absolute bg-black inset-0 opacity-70"></div>
       <div
@@ -31,7 +31,7 @@
               :alt="offer.title"
               class="h-full object-cover w-full"
               :src="offer.image.mob"
-              :srcset="`${offer.image.mob} 320w, ${offer.image.desk}`"
+              :srcset="`${offer.image.mob} 360w, ${offer.image.desk}`"
             />
             <div class="absolute bg-black inset-0 opacity-70"></div>
             <div
