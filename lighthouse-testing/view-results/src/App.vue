@@ -70,24 +70,24 @@ import spaNews from '../../results-data/spa/news.json' with { type: 'json' }
 import spaOffers from '../../results-data/spa/offers.json' with { type: 'json' }
 import spaContacts from '../../results-data/spa/contacts.json' with { type: 'json' }
 
-// import mSsrHome from '../../results-data/m-ssr/home.json' with { type: 'json' }
-// import mSsrAboutUs from '../../results-data/m-ssr/about-us.json' with { type: 'json' }
-// import mSsrNews from '../../results-data/m-ssr/news.json' with { type: 'json' }
-// import mSsrOffers from '../../results-data/m-ssr/offers.json' with { type: 'json' }
-// import mSsrContacts from '../../results-data/m-ssr/contacts.json' with { type: 'json' }
-//
-// import ssgHome from '../../results-data/ssg/home.json' with { type: 'json' }
-// import ssgAboutUs from '../../results-data/ssg/about-us.json' with { type: 'json' }
-// import ssgNews from '../../results-data/ssg/news.json' with { type: 'json' }
-// import ssgOffers from '../../results-data/ssg/offers.json' with { type: 'json' }
-// import ssgContacts from '../../results-data/ssg/contacts.json' with { type: 'json' }
+import mSsrHome from '../../results-data/m-ssr/home.json' with { type: 'json' }
+import mSsrAboutUs from '../../results-data/m-ssr/about-us.json' with { type: 'json' }
+import mSsrNews from '../../results-data/m-ssr/news.json' with { type: 'json' }
+import mSsrOffers from '../../results-data/m-ssr/offers.json' with { type: 'json' }
+import mSsrContacts from '../../results-data/m-ssr/contacts.json' with { type: 'json' }
+
+import ssgHome from '../../results-data/ssg/home.json' with { type: 'json' }
+import ssgAboutUs from '../../results-data/ssg/about-us.json' with { type: 'json' }
+import ssgNews from '../../results-data/ssg/news.json' with { type: 'json' }
+import ssgOffers from '../../results-data/ssg/offers.json' with { type: 'json' }
+import ssgContacts from '../../results-data/ssg/contacts.json' with { type: 'json' }
 
 const allArchitectureData = {
   tSsr: [tSsrHome, tSsrAboutUs, tSsrNews, tSsrOffers, tSsrContacts],
   hda: [hdaHome, hdaAboutUs, hdaNews, hdaOffers, hdaContacts],
   spa: [spaHome, spaAboutUs, spaNews, spaOffers, spaContacts],
-  // mSsr: [mSsrHome, mSsrAboutUs, mSsrNews, mSsrOffers, mSsrContacts],
-  // ssg: [ssgHome, ssgAboutUs, ssgNews, ssgOffers, ssgContacts],
+  mSsr: [mSsrHome, mSsrAboutUs, mSsrNews, mSsrOffers, mSsrContacts],
+  ssg: [ssgHome, ssgAboutUs, ssgNews, ssgOffers, ssgContacts],
 }
 
 const structuredAudits = (
@@ -96,9 +96,9 @@ const structuredAudits = (
     'largest-contentful-paint',
     'total-blocking-time',
     'cumulative-layout-shift',
-    'speed-index',
+    // 'speed-index',
     // other metrics
-    // 'time-to-interactive',
+    'interactive',
   ] as const
 ).map((auditId) => ({
   audit: hdaHome.audits[auditId],
@@ -112,5 +112,4 @@ const structuredAudits = (
     ),
   ]),
 }))
-console.log(structuredAudits)
 </script>
