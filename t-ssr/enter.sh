@@ -1,1 +1,0 @@
-docker exec -it t-ssr-php-1 bash
