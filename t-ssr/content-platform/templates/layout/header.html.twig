@@ -5,33 +5,48 @@
         </a>
         <ul class="flex gap-4 flex-wrap">
             <li>
-                <a
-                        href="{{ path('home') }}"
-                        class="{{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('home') }}"
+                   hx-get="{{ path('home_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('home') }}"
+                   onclick="setActiveLink(this)"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
                 >Sākums</a>
             </li>
             <li>
-                <a
-                        href="{{ path('about_us') }}"
-                        class="{{ app.request.attributes.get('_route') == 'about_us' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('about_us') }}"
+                   hx-get="{{ path('about_us_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('about_us') }}"
+                   onclick="setActiveLink(this)"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'about_us' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
                 >Par mums</a>
             </li>
             <li>
-                <a
-                        href="{{ path('news') }}"
-                        class="{{ app.request.attributes.get('_route') == 'news' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('news') }}"
+                   hx-get="{{ path('news_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('news') }}"
+                   onclick="setActiveLink(this)"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'news' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
                 >Jaunumi</a>
             </li>
             <li>
-                <a
-                        href="{{ path('offers') }}"
-                        class="{{ app.request.attributes.get('_route') == 'offers' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('offers') }}"
+                   hx-get="{{ path('offers_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('offers') }}"
+                   onclick="setActiveLink(this)"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'offers' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
                 >Piedāvājumi</a>
             </li>
             <li>
-                <a
-                        href="{{ path('contacts') }}"
-                        class="{{ app.request.attributes.get('_route') == 'contacts' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('contacts') }}"
+                   hx-get="{{ path('contacts_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('contacts') }}"
+                   onclick="setActiveLink(this)"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'contacts' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
                 >Kontakti</a>
             </li>
         </ul>

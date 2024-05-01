@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class MainController extends AbstractController
+class MainPartialController extends AbstractController
 {
     use HtmxControllerTrait;
 
@@ -20,42 +20,42 @@ class MainController extends AbstractController
         $this->data = JsonFileReaderService::readAndParseJson(__DIR__ . '/../../data/data.json');
     }
 
-    #[Route('/', name: 'home')]
-    public function home(): Response
+    #[Route('home-body', name: 'home_body')]
+    public function homeBody(): HtmxResponse
     {
-        return $this->render('main/home.html.twig', [
+        return $this->htmxRender('main/home-body.html.twig', [
             'data' => $this->data['pages'][0],
         ]);
     }
 
-    #[Route('/about-us', name: 'about_us')]
-    public function aboutUs(): Response
+    #[Route('/about-us-body', name: 'about_us_body')]
+    public function aboutUsBody(): HtmxResponse
     {
-        return $this->render('main/about-us.html.twig', [
+        return $this->htmxRender('main/about-us-body.html.twig', [
             'data' => $this->data['pages'][1],
         ]);
     }
 
-    #[Route('/news', name: 'news')]
-    public function news(): Response
+    #[Route('news-body', name: 'news_body')]
+    public function newsBody(): HtmxResponse
     {
-        return $this->render('main/news.html.twig', [
+        return $this->htmxRender('main/news-body.html.twig', [
             'data' => $this->data['pages'][2],
         ]);
     }
 
-    #[Route('/offers', name: 'offers')]
-    public function offers(): Response
+    #[Route('offers-body', name: 'offers_body')]
+    public function offersBody(): HtmxResponse
     {
-        return $this->render('main/offers.html.twig', [
+        return $this->htmxRender('main/offers-body.html.twig', [
             'data' => $this->data['pages'][3],
         ]);
     }
 
-    #[Route('/contacts', name: 'contacts')]
-    public function contacts(): Response
+    #[Route('contacts-body', name: 'contacts_body')]
+    public function contactsBody(): HtmxResponse
     {
-        return $this->render('main/contacts.html.twig', [
+        return $this->htmxRender('main/contacts-body.html.twig', [
             'data' => $this->data['pages'][4],
         ]);
     }

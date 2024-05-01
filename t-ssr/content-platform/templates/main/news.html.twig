@@ -9,35 +9,5 @@
 {% endblock %}
 
 {% block content %}
-    <div class="relative">
-        <img
-                class="absolute inset-0 h-full w-full object-cover"
-                src="{{ data.images[0].mob }}"
-                srcset="{{ data.images[0].mob }} 360w, {{ data.images[0].desk }}"
-                alt="hero">
-        <div class="absolute inset-0 bg-black opacity-70"></div>
-        <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-            <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">{{ data.title }}</h1>
-            <p class="mt-6 text-xl text-white max-w-3xl">{{ data.content }}</p>
-        </div>
-    </div>
-
-    {% for item in data.news_items %}
-        <div class="flex flex-wrap {{ loop.index is odd ? 'flex-row' : 'flex-row-reverse' }} my-12">
-            <div class="w-full sm:w-1/2 rounded overflow-hidden">
-                <img
-                        class="w-full h-64 object-cover rounded"
-                        src="{{ item.image.mob }}"
-                        srcset="{{ item.image.mob }} 360w, {{ item.image.desk }}"
-                        alt="{{ item.title }}">
-            </div>
-            <div class="w-full sm:w-1/2 p-4 pt-0">
-                <div class="flex justify-between">
-                    <h2 class="text-2xl font-bold mb-2">{{ item.title }}</h2>
-                    <span class="text-gray-600 text-sm">{{ item.date }}</span>
-                </div>
-                <p>{{ item.description }}</p>
-            </div>
-        </div>
-    {% endfor %}
+    {{ include('main/news-body.html.twig', { data: data }) }}
 {% endblock %}
