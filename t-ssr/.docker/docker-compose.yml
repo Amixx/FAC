@@ -20,7 +20,7 @@ services:
         TIMEZONE: ${TIMEZONE}
     command: [ "bash", "-c", "chown -R www-data:www-data /var/www/symfony/var && php-fpm" ]
     volumes:
-      - ../${APP_FOLDER}:/var/www/symfony:cached
+      - ../${APP_DIR}:/var/www/symfony:cached
       - symfony_app_var:/var/www/symfony/var
       - symfony_app_vendor:/var/www/symfony/vendor
     networks:
@@ -29,7 +29,7 @@ services:
     build:
       context: ./nginx
     volumes:
-      - ../${APP_FOLDER}:/var/www/symfony:cached
+      - ../${APP_DIR}:/var/www/symfony:cached
       - symfony_app_var:/var/www/symfony/var
       - symfony_app_vendor:/var/www/symfony/vendor
       - ./certs:/etc/nginx/certs

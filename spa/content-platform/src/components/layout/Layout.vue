@@ -16,7 +16,6 @@
 <script setup lang="ts">
 import PageHeader from './PageHeader.vue'
 import PageFooter from './PageFooter.vue'
-import DataRepository from '@/repositories/DataRepository'
 import { ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { routeNameToPageIndex } from '@/router'
@@ -36,7 +35,9 @@ watchEffect(async () => {
   const index = routeNameToPageIndex(route.name)
   if (index === -1) return
   try {
-    pageData.value = await DataRepository.getPageData(index)
+    pageData.value = (await (
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/pages/${index}`)
+    ).json()) as Page
     useHead({
       title: pageData.value.title,
       meta: [
@@ -54,7 +55,9 @@ watchEffect(async () => {
   footerDataLoading.value = true
   globalData.value = null
   try {
-    globalData.value = await DataRepository.getGlobalData()
+    globalData.value = await (
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/global`)
+    ).json()
   } catch (e) {
     console.error(e)
   } finally {

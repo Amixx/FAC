@@ -41,14 +41,14 @@
                 <div>
                     <div class="flex justify-center gap-4 mb-4">
                         {% if prevPageData %}
-                            <a href="{{ path('catalogue-products', prevPageData) }}"
+                            <a href="{{ path('catalogue', prevPageData) }}"
                                class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
                                 Iepriekšējā lapa
                             </a>
                         {% endif %}
                         <span class="bg-gray-100 rounded-full h-10 w-10 justify-center flex items-center">{{ page }}</span>
                         {% if nextPageData %}
-                            <a href="{{ path('catalogue-products', nextPageData) }}"
+                            <a href="{{ path('catalogue', nextPageData) }}"
                                class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
                                 Nākamā lapa
                             </a>

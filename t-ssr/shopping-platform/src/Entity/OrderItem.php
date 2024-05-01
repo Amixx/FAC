@@ -15,10 +15,6 @@ class OrderItem
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Order $orderr = null;
-
-    #[ORM\ManyToOne(inversedBy: 'orderItems')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
     #[ORM\Column]
@@ -27,18 +23,6 @@ class OrderItem
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getOrderr(): ?Order
-    {
-        return $this->orderr;
-    }
-
-    public function setOrderr(?Order $orderr): static
-    {
-        $this->orderr = $orderr;
-
-        return $this;
     }
 
     public function getProduct(): ?Product

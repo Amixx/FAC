@@ -65,14 +65,13 @@ class DataService
         $itemsPerPage = 10;
         $categories = $this->productCategoryRepository->findAll();
         $productsCount = $this->productRepository->findProductsByCategoryCount($selectedCategory);
-
         $hasPrevPage = $page > 1;
         $hasCurrentPage = (($page - 1) * $itemsPerPage) < $productsCount;
         $hasNextPage = ($page * $itemsPerPage) < $productsCount;
 
         if ($selectedCategory) {
             if (!$hasCurrentPage) {
-                return $this->redirectToRoute('catalogue', ['page' => 1, 'category' => $selectedCategory]);
+                return ['redirect' => ['page' => 1, 'category' => $selectedCategory]];
             }
             $products = $this->productRepository->findProductsByCategory($selectedCategory, $page);
         } else {

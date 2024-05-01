@@ -49,7 +49,7 @@
         </div>
 
         <div class="text-center mt-16">
-            <h2 class="text-3xl font-bold mb-4">New Products</h2>
+            <h2 class="text-3xl font-bold mb-4">Jaunākie produkti</h2>
             <div class="flex flex-wrap gap-4 justify-center">
                 {% for product in newProducts %}
                     {{ include('partials/product-card.html.twig', { product: product }) }}
@@ -58,7 +58,7 @@
         </div>
 
         <div class="text-center mt-16">
-            <h2 class="text-3xl font-bold mb-4">Popular Products</h2>
+            <h2 class="text-3xl font-bold mb-4">Populārākie produkti</h2>
             <div class="flex flex-wrap gap-4 justify-center">
                 {% for product in popularProducts %}
                     {{ include('partials/product-card.html.twig', { product: product }) }}
@@ -67,7 +67,7 @@
         </div>
 
         <div class="text-center mt-16">
-            <h2 class="text-3xl font-bold mb-4">Products With Discounts</h2>
+            <h2 class="text-3xl font-bold mb-4">Produkti ar atlaidēm</h2>
             <div class="flex flex-wrap gap-4 justify-center">
                 {% for product in productsWithDiscounts %}
                     {{ include('partials/product-card.html.twig', { product: product }) }}

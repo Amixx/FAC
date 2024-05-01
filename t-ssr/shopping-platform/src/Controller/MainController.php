@@ -27,6 +27,9 @@ class MainController extends AbstractController
     public function catalogue(Request $request, $page = 1): Response
     {
         $data = $this->dataService->getCatalogueData($request->get('category'), $page);
+        if ($data['redirect']) {
+            return $this->redirectToRoute('catalogue', $data['redirect']);
+        }
         return $this->render('main/catalogue.html.twig', $data);
     }
 
