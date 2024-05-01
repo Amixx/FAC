@@ -43,6 +43,7 @@ class AppFixtures extends Fixture
             $product->setDiscount($this->faker->randomFloat(2, 0, 100));
             $product->setPopularity($this->faker->randomFloat(2, 0, 100));
             $product->setCategory($this->faker->randomElement($manager->getRepository(ProductCategory::class)->findAll()));
+            $product->setCreatedAt();
 
             $manager->persist($product);
         }
