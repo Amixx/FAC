@@ -38,6 +38,24 @@
 
             <!-- Products Grid -->
             <div class="w-full md:w-3/4 px-4">
+                <div>
+                    <div class="flex justify-center gap-4 mb-4">
+                        {% if toPrevPage %}
+                            <a href="{{ toPrevPage }}"
+                               class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
+                                Iepriekšējā lapa
+                            </a>
+                        {% endif %}
+                        <span class="bg-gray-100 rounded h-8 w-8 justify-center flex items-center">{{ page }}</span>
+                        {% if toNextPage %}
+                            <a href="{{ toNextPage }}"
+                               class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
+                                Nākamā lapa
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {% for product in products %}
                         {% include 'partials/product-card.html.twig' %}

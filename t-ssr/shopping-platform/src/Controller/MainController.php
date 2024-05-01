@@ -64,6 +64,11 @@ class MainController extends AbstractController
             $products = $this->productRepository->findProducts($page);
         }
 
+        $toNextPage = ($page * 10) < $this->productRepository->findProductsCount()
+            ? $this->generateUrl('catalogue', ['page' => $page + 1])
+            : null;
+        $toPrevPage = $page > 1 ? $this->generateUrl('catalogue', ['page' => $page - 1]) : null;
+
         return $this->render('main/catalogue.html.twig', [
             'metadata' => [
                 'title' => 'Katalogs | Apģērbi.lv',
@@ -74,6 +79,9 @@ class MainController extends AbstractController
             'products' => $products,
             'categories' => $categories,
             'selectedCategory' => $selectedCategory,
+            'page' => $page,
+            'toNextPage' => $toNextPage,
+            'toPrevPage' => $toPrevPage,
         ]);
     }
 
