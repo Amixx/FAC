@@ -1,11 +1,41 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-  echo "Usage: $0 <type>"
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $0 <site> <type>"
   exit 1
 fi
 
-type="$1"
+site="$1"
+
+case "$site" in
+  content-platform|shopping-platform) ;;
+  *) echo "Error: Invalid site. Supported sites are content-platform, shopping-platform." >&2
+     exit 1 ;;
+esac
+
+if [ "$site" == "content-platform" ]; then
+  # Define pages
+  pages=(
+    ""
+    "about-us"
+    "news"
+    "offers"
+    "contacts"
+  )
+fi
+if [ "$site" == "shopping-platform" ]; then
+  # Define pages
+  pages=(
+    ""
+    "catalogue"
+    "cart"
+    "checkout"
+  )
+fi
+
+mkdir -p "./results-data/$site"
+
+type="$2"
 
 case "$type" in
   t-ssr|spa|m-ssr|ssg|hda|all) ;;
@@ -13,21 +43,11 @@ case "$type" in
      exit 1 ;;
 esac
 
-# Define suffixes
-suffixes=(
-  ""
-  "about-us"
-  "news"
-  "news"
-  "offers"
-  "contacts"
-)
-
 base_url="https://thesis-project.local.io"
 
 run_lighthouse() {
   local type="$1"
-  local suffix="$2"
+  local page="$2"
 
   url="$base_url"
   if [ "$type" == "spa" ]; then
@@ -40,13 +60,14 @@ run_lighthouse() {
     url+=":443/"
   fi
 
-  mkdir -p "./results-data/$type"
+  results_dir="./results-data/$site/$type"
+  mkdir -p "$results_dir"
 
-  url="$url$suffix"
+  url="$url$page"
   echo "Running Lighthouse for URL: $url"
   npx -y lighthouse "$url" \
    --output=json \
-   --output-path=./results-data/"$type"/"${suffix:-home}".json \
+   --output-path="$results_dir"/"${page:-home}".json \
    --only-categories=performance
 #   --throttling.rttMs=80 \
 #   --throttling.throughputKbps=4096
@@ -55,14 +76,14 @@ run_lighthouse() {
 if [ "$type" == "all" ]; then
   # Run Lighthouse script for all types
   for current_type in "t-ssr" "spa" "m-ssr" "ssg" "hda"; do
-    for suffix in "${suffixes[@]}"; do
-      run_lighthouse "$current_type" "$suffix"
+    for page in "${pages[@]}"; do
+      run_lighthouse "$current_type" "$page"
     done
   done
 else
   # Run Lighthouse script for the specified type
-  for suffix in "${suffixes[@]}"; do
-    run_lighthouse "$type" "$suffix"
+  for page in "${pages[@]}"; do
+    run_lighthouse "$type" "$page"
   done
 fi
 
