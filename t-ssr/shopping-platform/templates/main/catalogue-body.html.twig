@@ -25,13 +25,6 @@
             </div>
         </div>
 
-        <!-- Products Grid -->
-        <div class="w-full md:w-3/4 px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for product in products %}
-                    {% include 'partials/product-card.html.twig' %}
-                {% endfor %}
-            </div>
-        </div>
+        {% include 'main/catalogue-products.html.twig' %}
     </div>
 </div>

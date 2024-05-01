@@ -1,0 +1,37 @@
+<div class="w-full md:w-3/4 px-4" id="catalogue-products">
+    <div>
+        <div class="flex justify-center gap-4 mb-4">
+            {% if prevPageData %}
+                {% set partialUrl = path('catalogue-products', prevPageData) %}
+                {% set fullPageUrl = path('catalogue', prevPageData) %}
+                <a href="{{ fullPageUrl }}"
+                   hx-get="{{ partialUrl }}"
+                   hx-target="#catalogue-products"
+                   hx-swap="outerHTML"
+                   hx-replace-url="{{ fullPageUrl }}"
+                   class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
+                    Iepriekšējā lapa
+                </a>
+            {% endif %}
+            <span class="bg-gray-100 rounded-full h-10 w-10 justify-center flex items-center">{{ page }}</span>
+            {% if nextPageData %}
+                {% set partialUrl = path('catalogue-products', nextPageData) %}
+                {% set fullPageUrl = path('catalogue', nextPageData) %}
+                <a href="{{ fullPageUrl }}"
+                   hx-get="{{ partialUrl }}"
+                   hx-target="#catalogue-products"
+                   hx-swap="outerHTML"
+                   hx-replace-url="{{ fullPageUrl }}"
+                   class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
+                    Nākamā lapa
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in products %}
+            {% include 'partials/product-card.html.twig' %}
+        {% endfor %}
+    </div>
+</div>
