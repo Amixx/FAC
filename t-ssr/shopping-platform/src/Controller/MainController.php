@@ -55,19 +55,26 @@ class MainController extends AbstractController
     #[Route('/catalogue/{page}', name: 'catalogue')]
     public function catalogue(Request $request, $page = 1): Response
     {
+        $itemsPerPage = 10;
         $categories = $this->productCategoryRepository->findAll();
-
         $selectedCategory = $request->get('category');
+        $productsCount = $this->productRepository->findProductsByCategoryCount($selectedCategory);
+        $hasCurrentPage = (($page - 1) * $itemsPerPage) < $productsCount;
+        $hasNextPage = ($page * $itemsPerPage) < $productsCount;
+
         if ($selectedCategory) {
+            if (!$hasCurrentPage) {
+                return $this->redirectToRoute('catalogue', ['page' => 1, 'category' => $selectedCategory]);
+            }
             $products = $this->productRepository->findProductsByCategory($selectedCategory, $page);
         } else {
             $products = $this->productRepository->findProducts($page);
         }
 
-        $toNextPage = ($page * 10) < $this->productRepository->findProductsCount()
-            ? $this->generateUrl('catalogue', ['page' => $page + 1])
+        $toNextPage = $hasNextPage
+            ? $this->generateUrl('catalogue', ['page' => $page + 1, 'category' => $selectedCategory])
             : null;
-        $toPrevPage = $page > 1 ? $this->generateUrl('catalogue', ['page' => $page - 1]) : null;
+        $toPrevPage = $page > 1 ? $this->generateUrl('catalogue', ['page' => $page - 1, 'category' => $selectedCategory]) : null;
 
         return $this->render('main/catalogue.html.twig', [
             'metadata' => [

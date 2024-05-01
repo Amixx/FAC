@@ -72,11 +72,17 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findProductsCount(): int
+    public function findProductsByCategoryCount(?string $category): int
     {
-        return $this->createQueryBuilder('p')
+        $queryBuilder = $this->createQueryBuilder('p')
             ->select('count(p)')
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->join('p.category', 'product_category');
+
+        if ($category) {
+            $queryBuilder->where('product_category.name = :category')
+                ->setParameter('category', $category);
+        }
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 }
