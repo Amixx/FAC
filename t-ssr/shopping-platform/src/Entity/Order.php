@@ -11,6 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`order`')]
 class Order
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -75,5 +79,14 @@ class Order
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        $totalPrice = 0;
+        foreach ($this->orderItems as $orderItem) {
+            $totalPrice += ($orderItem->getProduct()->getPriceWithDiscount() * $orderItem->getAmount());
+        }
+        return $totalPrice;
     }
 }

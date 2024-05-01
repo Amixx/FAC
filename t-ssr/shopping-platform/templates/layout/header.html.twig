@@ -16,6 +16,12 @@
                         class="{{ app.request.attributes.get('_route') == 'catalogue' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
                 >Katalogs</a>
             </li>
+            <li>
+                <a
+                        href="{{ path('cart') }}"
+                        class="{{ app.request.attributes.get('_route') == 'cart' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Grozs</a>
+            </li>
         </ul>
     </nav>
 </header>

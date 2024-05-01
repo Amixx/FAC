@@ -180,4 +180,12 @@ class Product
     {
         $this->createdAt = new \DateTimeImmutable();
     }
+
+    public function getPriceWithDiscount(): float
+    {
+        if (!$this->discount) {
+            return $this->price;
+        }
+        return $this->price - ($this->price * $this->discount / 100);
+    }
 }

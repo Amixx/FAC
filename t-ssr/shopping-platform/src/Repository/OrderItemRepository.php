@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Order;
 use App\Entity\OrderItem;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +18,26 @@ class OrderItemRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderItem::class);
     }
 
-    //    /**
-    //     * @return OrderItem[] Returns an array of OrderItem objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('o.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public static function createNewOrderItem(Product $product, Order $order): OrderItem
+    {
+        $orderItem = new OrderItem();
+        $orderItem->setOrderr($order);
+        $orderItem->setProduct($product);
+        $orderItem->setAmount(1);
+        $order->addOrderItem($orderItem);
 
-    //    public function findOneBySomeField($value): ?OrderItem
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $orderItem;
+    }
+
+    public function save(OrderItem $orderItem): void
+    {
+        $this->getEntityManager()->persist($orderItem);
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(OrderItem $orderItem): void
+    {
+        $this->getEntityManager()->remove($orderItem);
+        $this->getEntityManager()->flush();
+    }
 }
