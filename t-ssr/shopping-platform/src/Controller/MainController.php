@@ -7,6 +7,7 @@ use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
+use App\Service\DataService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,115 +15,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
-    private ProductRepository $productRepository;
-    private ProductCategoryRepository $productCategoryRepository;
-    private OrderRepository $orderRepository;
-    private OrderItemRepository $orderItemRepository;
+    private DataService $dataService;
 
-    public function __construct(
-        ProductRepository         $productRepository,
-        ProductCategoryRepository $productCategoryRepository,
-        OrderRepository           $orderRepository,
-        OrderItemRepository       $orderItemRepository
-    )
+    public function __construct(DataService $dataService)
     {
-        $this->productRepository = $productRepository;
-        $this->productCategoryRepository = $productCategoryRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemRepository = $orderItemRepository;
+        $this->dataService = $dataService;
     }
 
     #[Route('/', name: 'home')]
     public function home(): Response
     {
-        return $this->render('main/home.html.twig', [
-            'metadata' => [
-                'title' => 'Apģērbi.lv',
-                'metaTitle' => 'Apģērbi.lv',
-                'metaDescription' => 'lorem ipsum dolor sit amet',
-                'metaKeywords' => 'lorem ipsum dolor sit amet',
-            ],
-            'images' => [
-                'mob' => '/images/mob/home-hero.jpg',
-                'desk' => '/images/desk/home-hero.jpg',
-            ],
-            'newProducts' => $this->productRepository->findNewProducts(),
-            'popularProducts' => $this->productRepository->findPopularProducts(),
-            'productsWithDiscounts' => $this->productRepository->findProductsWithDiscounts(),
-        ]);
+        return $this->render('main/home.html.twig', $this->dataService->getHomeData());
     }
 
     #[Route('/catalogue/{page}', name: 'catalogue')]
     public function catalogue(Request $request, $page = 1): Response
     {
-        $itemsPerPage = 10;
-        $categories = $this->productCategoryRepository->findAll();
-        $selectedCategory = $request->get('category');
-        $productsCount = $this->productRepository->findProductsByCategoryCount($selectedCategory);
-        $hasCurrentPage = (($page - 1) * $itemsPerPage) < $productsCount;
-        $hasNextPage = ($page * $itemsPerPage) < $productsCount;
-
-        if ($selectedCategory) {
-            if (!$hasCurrentPage) {
-                return $this->redirectToRoute('catalogue', ['page' => 1, 'category' => $selectedCategory]);
-            }
-            $products = $this->productRepository->findProductsByCategory($selectedCategory, $page);
-        } else {
-            $products = $this->productRepository->findProducts($page);
-        }
-
-        $toNextPage = $hasNextPage
-            ? $this->generateUrl('catalogue', ['page' => $page + 1, 'category' => $selectedCategory])
-            : null;
-        $toPrevPage = $page > 1 ? $this->generateUrl('catalogue', ['page' => $page - 1, 'category' => $selectedCategory]) : null;
-
+        $data = $this->dataService->getCatalogueData($request->get('category'), $page);
         return $this->render('main/catalogue.html.twig', [
-            'metadata' => [
-                'title' => 'Katalogs | Apģērbi.lv',
-                'metaTitle' => 'Katalogs | Apģērbi.lv',
-                'metaDescription' => 'lorem ipsum dolor sit amet',
-                'metaKeywords' => 'lorem ipsum dolor sit amet',
-            ],
-            'products' => $products,
-            'categories' => $categories,
-            'selectedCategory' => $selectedCategory,
-            'page' => $page,
-            'toNextPage' => $toNextPage,
-            'toPrevPage' => $toPrevPage,
+            ...$data,
+            'toNextPage' => $data['nextPageData'] ? $this->generateUrl('catalogue', $data['nextPageData']) : null,
+            'toPrevPage' => $data['prevPageData'] ? $this->generateUrl('catalogue', $data['prevPageData']) : null,
         ]);
     }
 
     #[Route('/product/{id}', name: 'product')]
     public function product(int $id): Response
     {
-        $product = $this->productRepository->find($id);
-
-        return $this->render('main/product.html.twig', [
-            'metadata' => [
-                'title' => $product->getTitle() . ' | Apģērbi.lv',
-                'metaTitle' => $product->getTitle() . ' | Apģērbi.lv',
-                'metaDescription' => 'lorem ipsum dolor sit amet',
-                'metaKeywords' => 'lorem ipsum dolor sit amet',
-            ],
-            'product' => $product,
-        ]);
+        return $this->render('main/product.html.twig', $this->dataService->getProductData($id));
     }
 
     #[Route('/add-to-cart', name: 'add-to-cart', methods: ['POST'])]
     public function addToCart(Request $request): Response
     {
-        $productId = $request->request->get('productId');
+        $flash = $this->dataService->addToCart($request->request->get('productId'));
 
-        $product = $this->productRepository->find($productId);
-        $order = $this->orderRepository->getCurrentOrder() ?? $this->orderRepository->createNewOrder();
-
-        $orderItem = $this->orderItemRepository->createNewOrderItem($product, $order);
-        $order->addOrderItem($orderItem);
-
-        $this->orderItemRepository->save($orderItem);
-        $this->orderRepository->save($order);
-
-        $this->addFlash('success', 'Produkts pievienots grozam!');
+        $this->addFlash($flash['type'], $flash['message']);
 
         return $this->redirectToRoute('catalogue');
     }
@@ -130,34 +58,15 @@ class MainController extends AbstractController
     #[Route('cart', name: 'cart')]
     public function cart(): Response
     {
-        $order = $this->orderRepository->getCurrentOrder();
-        if (!$order) {
-            $order = $this->orderRepository->createNewOrder();
-        }
-
-        return $this->render('main/cart.html.twig', [
-            'metadata' => [
-                'title' => 'Grozs | Apģērbi.lv',
-                'metaTitle' => 'Grozs | Apģērbi.lv',
-                'metaDescription' => 'lorem ipsum dolor sit amet',
-                'metaKeywords' => 'lorem ipsum dolor sit amet',
-            ],
-            'order' => $order,
-        ]);
+        return $this->render('main/cart.html.twig', $this->dataService->getCartData());
     }
 
     #[Route('update-cart-item', name: 'update-cart-item')]
     public function updateCartItem(Request $request): Response
     {
-        $cartItemId = $request->request->get('cartItemId');
-        $amount = $request->request->get('amount');
+        $flash = $this->dataService->updateCartItem($request->request->get('cartItemId'), $request->request->get('amount'));
 
-        $orderItem = $this->orderItemRepository->find($cartItemId);
-        $orderItem->setAmount($amount);
-
-        $this->orderItemRepository->save($orderItem);
-
-        $this->addFlash('success', 'Groza vienums atjaunots!');
+        $this->addFlash($flash['type'], $flash['message']);
 
         return $this->redirectToRoute('cart');
     }
@@ -165,12 +74,9 @@ class MainController extends AbstractController
     #[Route('remove-cart-item', name: 'remove-cart-item')]
     public function removeCartItem(Request $request): Response
     {
-        $cartItemId = $request->request->get('cartItemId');
+        $flash = $this->dataService->removeCartItem($request->request->get('cartItemId'));
 
-        $orderItem = $this->orderItemRepository->find($cartItemId);
-        $this->orderItemRepository->remove($orderItem);
-
-        $this->addFlash('success', 'Groza vienums dzēsts!');
+        $this->addFlash($flash['type'], $flash['message']);
 
         return $this->redirectToRoute('cart');
     }
@@ -178,36 +84,19 @@ class MainController extends AbstractController
     #[Route('checkout', name: 'checkout')]
     public function checkout(): Response
     {
-        $order = $this->orderRepository->getCurrentOrder();
-        if (!$order) {
-            $order = $this->orderRepository->createNewOrder();
-        }
-
-        return $this->render('main/checkout.html.twig', [
-            'metadata' => [
-                'title' => 'Pirkuma noformēšana | Apģērbi.lv',
-                'metaTitle' => 'Pirkuma noformēšana | Apģērbi.lv',
-                'metaDescription' => 'lorem ipsum dolor sit amet',
-                'metaKeywords' => 'lorem ipsum dolor sit amet',
-            ],
-            'order' => $order,
-        ]);
+        return $this->render('main/checkout.html.twig', $this->dataService->getCheckoutData());
     }
 
     #[Route('make-payment', name: 'make-payment')]
     public function payment(): Response
     {
-        $order = $this->orderRepository->getCurrentOrder();
-        if (!$order) {
+        $flash = $this->dataService->makePayment();
+
+        if (!$flash) {
             return $this->redirectToRoute('home');
         }
 
-        $order->setStatus(Order::STATUS_COMPLETED);
-        $this->orderRepository->save($order);
-
-        $this->addFlash('success', 'Pirkums veiksmīgi noformēts!');
-
-        sleep(3);
+        $this->addFlash($flash['type'], $flash['message']);
 
         return $this->redirectToRoute('home');
     }
