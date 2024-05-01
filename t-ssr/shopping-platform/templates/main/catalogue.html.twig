@@ -30,7 +30,7 @@
                         </select>
                         <button type="submit"
                                 class="mt-4 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1">
-                            Apply
+                            Lietot
                         </button>
                     </form>
                 </div>
@@ -40,15 +40,15 @@
             <div class="w-full md:w-3/4 px-4">
                 <div>
                     <div class="flex justify-center gap-4 mb-4">
-                        {% if toPrevPage %}
-                            <a href="{{ toPrevPage }}"
+                        {% if prevPageData %}
+                            <a href="{{ path('catalogue-products', prevPageData) }}"
                                class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
                                 Iepriekšējā lapa
                             </a>
                         {% endif %}
                         <span class="bg-gray-100 rounded-full h-10 w-10 justify-center flex items-center">{{ page }}</span>
-                        {% if toNextPage %}
-                            <a href="{{ toNextPage }}"
+                        {% if nextPageData %}
+                            <a href="{{ path('catalogue-products', nextPageData) }}"
                                class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
                                 Nākamā lapa
                             </a>

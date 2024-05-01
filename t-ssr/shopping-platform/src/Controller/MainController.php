@@ -2,11 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Order;
-use App\Repository\OrderItemRepository;
-use App\Repository\OrderRepository;
-use App\Repository\ProductCategoryRepository;
-use App\Repository\ProductRepository;
 use App\Service\DataService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +27,7 @@ class MainController extends AbstractController
     public function catalogue(Request $request, $page = 1): Response
     {
         $data = $this->dataService->getCatalogueData($request->get('category'), $page);
-        return $this->render('main/catalogue.html.twig', [
-            ...$data,
-            'toNextPage' => $data['nextPageData'] ? $this->generateUrl('catalogue', $data['nextPageData']) : null,
-            'toPrevPage' => $data['prevPageData'] ? $this->generateUrl('catalogue', $data['prevPageData']) : null,
-        ]);
+        return $this->render('main/catalogue.html.twig', $data);
     }
 
     #[Route('/product/{id}', name: 'product')]
