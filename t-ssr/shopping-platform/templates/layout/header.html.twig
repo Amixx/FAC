@@ -1,0 +1,15 @@
+<header class="container">
+    <nav class="bg-yellow-700 text-white shadow-md flex justify-between items-center p-4">
+        <a href="{{ path('home') }}" class="text-2xl font-bold text-lime-200">
+            Test 123
+        </a>
+        <ul class="flex gap-4 flex-wrap">
+            <li>
+                <a
+                        href="{{ path('home') }}"
+                        class="{{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                >Sākums</a>
+            </li>
+        </ul>
+    </nav>
+</header>

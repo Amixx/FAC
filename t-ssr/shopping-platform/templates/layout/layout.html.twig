@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" crossorigin href="{{ asset('styles/app.css') }}">
+    {% block meta %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="min-h-screen bg-slate-100 flex items-center justify-center flex-col max-w-screen-2xl m-auto">
+{% include 'layout/header.html.twig' %}
+<main class="container bg-white">{% block content %}{% endblock %}</main>
+{% include 'layout/footer.html.twig' %}
+</body>
+</html>

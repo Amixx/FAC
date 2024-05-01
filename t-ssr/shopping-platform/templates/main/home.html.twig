@@ -1,0 +1,15 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %} {{ data.title }} {% endblock %}
+
+{% block meta %}
+    <meta name="title" content="{{ data.metaTitle }}">
+    <meta name="description" content="{{ data.metaDescription }}">
+    <meta name="keywords" content="{{ data.metaKeywords }}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        content
+    </div>
+{% endblock %}
