@@ -1,7 +1,7 @@
 <template>
   <main class="container mx-auto px-4 py-8">
     <h1 class="font-bold mb-8 mt-4 text-center text-xl">
-      Lighthouse Testing Results - {{ site }}
+      Lighthouse testu rezultāti - {{ site }}
     </h1>
 
     <div class="flex flex-wrap gap-8">

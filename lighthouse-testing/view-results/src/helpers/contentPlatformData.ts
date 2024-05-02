@@ -28,6 +28,8 @@ import ssgNews from '../../../results-data/content-platform/ssg/news.json' with 
 import ssgOffers from '../../../results-data/content-platform/ssg/offers.json' with { type: 'json' }
 import ssgContacts from '../../../results-data/content-platform/ssg/contacts.json' with { type: 'json' }
 
+import { transformInpData } from '@/helpers/transformInpData'
+
 export default {
   allArchitectureData: {
     tSsr: [tSsrHome, tSsrAboutUs, tSsrNews, tSsrOffers, tSsrContacts],
@@ -36,11 +38,11 @@ export default {
     mSsr: [mSsrHome, mSsrAboutUs, mSsrNews, mSsrOffers, mSsrContacts],
     ssg: [ssgHome, ssgAboutUs, ssgNews, ssgOffers, ssgContacts],
   },
-  inpData: {
-    tSsr: { numericValue: 30, displayValue: '30 ms' },
-    hda: { numericValue: 40, displayValue: '40 ms' },
-    spa: { numericValue: 60, displayValue: '60 ms' },
-    mSsr: { numericValue: 30, displayValue: '30 ms' },
-    ssg: { numericValue: 30, displayValue: '30 ms' },
-  },
+  inpData: transformInpData({
+    tSsr: 30,
+    hda: 40,
+    spa: 60,
+    mSsr: 30,
+    ssg: 30,
+  }),
 }

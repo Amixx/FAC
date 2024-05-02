@@ -18,10 +18,7 @@ import mSsrCart from '../../../results-data/shopping-platform/m-ssr/cart.json' w
 import mSsrCatalogue from '../../../results-data/shopping-platform/m-ssr/catalogue.json' with { type: 'json' }
 import mSsrCheckout from '../../../results-data/shopping-platform/m-ssr/checkout.json' with { type: 'json' }
 
-import ssgHome from '../../../results-data/shopping-platform/ssg/home.json' with { type: 'json' }
-import ssgCart from '../../../results-data/shopping-platform/ssg/cart.json' with { type: 'json' }
-import ssgCatalogue from '../../../results-data/shopping-platform/ssg/catalogue.json' with { type: 'json' }
-import ssgCheckout from '../../../results-data/shopping-platform/ssg/checkout.json' with { type: 'json' }
+import { transformInpData } from '@/helpers/transformInpData'
 
 export default {
   allArchitectureData: {
@@ -29,13 +26,11 @@ export default {
     hda: [hdaHome, hdaCart, hdaCatalogue, hdaCheckout],
     spa: [spaHome, spaCart, spaCatalogue, spaCheckout],
     mSsr: [mSsrHome, mSsrCart, mSsrCatalogue, mSsrCheckout],
-    ssg: [ssgHome, ssgCart, ssgCatalogue, ssgCheckout],
   },
-  inpData: {
-    tSsr: { numericValue: 30, displayValue: '30 ms' },
-    hda: { numericValue: 40, displayValue: '40 ms' },
-    spa: { numericValue: 60, displayValue: '60 ms' },
-    mSsr: { numericValue: 30, displayValue: '30 ms' },
-    ssg: { numericValue: 30, displayValue: '30 ms' },
-  },
+  inpData: transformInpData({
+    tSsr: 60,
+    hda: 60,
+    spa: 60,
+    mSsr: 80,
+  }),
 }
