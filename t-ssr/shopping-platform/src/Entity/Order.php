@@ -20,14 +20,14 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     /**
      * @var Collection<int, OrderItem>
      */
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderr', orphanRemoval: true)]
     private Collection $orderItems;
-
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
 
     public function __construct()
     {
@@ -37,6 +37,27 @@ class Order
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        $totalPrice = 0;
+        foreach ($this->orderItems as $orderItem) {
+            $totalPrice += ($orderItem->getProduct()->getPriceWithDiscount() * $orderItem->getAmount());
+        }
+        return $totalPrice;
     }
 
     /**
@@ -67,26 +88,5 @@ class Order
         }
 
         return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): float
-    {
-        $totalPrice = 0;
-        foreach ($this->orderItems as $orderItem) {
-            $totalPrice += ($orderItem->getProduct()->getPriceWithDiscount() * $orderItem->getAmount());
-        }
-        return $totalPrice;
     }
 }

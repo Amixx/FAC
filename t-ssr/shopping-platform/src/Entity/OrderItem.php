@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: OrderItemRepository::class)]
 class OrderItem
@@ -19,6 +20,11 @@ class OrderItem
 
     #[ORM\Column]
     private ?int $amount = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orderItems')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
+    private ?Order $orderr = null;
 
     public function getId(): ?int
     {
@@ -45,6 +51,18 @@ class OrderItem
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getOrderr(): ?Order
+    {
+        return $this->orderr;
+    }
+
+    public function setOrderr(?Order $orderr): static
+    {
+        $this->orderr = $orderr;
 
         return $this;
     }

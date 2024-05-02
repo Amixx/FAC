@@ -29,7 +29,7 @@ class JsonApiController extends AbstractController
         return $this->json($this->dataService->getHomeData());
     }
 
-    #[Route('/catalogue/{page}')]
+    #[Route('/catalogue/{page}', methods: ['OPTIONS', 'GET'])]
     public function catalogue(Request $request, int $page = 1): JsonResponse
     {
         return $this->json($this->dataService->getCatalogueData($request->get('category'), $page));
@@ -44,7 +44,7 @@ class JsonApiController extends AbstractController
     #[Route('/add-to-cart', methods: ['OPTIONS', 'POST'])]
     public function addToCart(Request $request): JsonResponse
     {
-        return $this->json($this->dataService->addToCart(json_decode($request->getContent())->productId));
+        return $this->json($this->dataService->addToCart($request->toArray()['productId']));
     }
 
     #[Route('/cart')]
@@ -53,18 +53,19 @@ class JsonApiController extends AbstractController
         return $this->json($this->dataService->getCartData());
     }
 
-    #[Route('/update-cart-item')]
+    #[Route('/update-cart-item', methods: ['OPTIONS', 'POST'])]
     public function updateCartItem(Request $request): JsonResponse
     {
-        $flash = $this->dataService->updateCartItem($request->request->get('cartItemId'), $request->request->get('amount'));
+        $requestData = $request->toArray();
+        $flash = $this->dataService->updateCartItem($requestData['cartItemId'], $requestData['amount']);
 
         return $this->json($flash);
     }
 
-    #[Route('/remove-cart-item')]
+    #[Route('/remove-cart-item', methods: ['OPTIONS', 'POST'])]
     public function removeCartItem(Request $request): JsonResponse
     {
-        $flash = $this->dataService->removeCartItem($request->request->get('cartItemId'));
+        $flash = $this->dataService->removeCartItem($request->toArray()['cartItemId']);
 
         return $this->json($flash);
     }

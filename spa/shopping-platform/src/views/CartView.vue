@@ -157,6 +157,7 @@ const removeCartItem = async (cartItemId: number) => {
       })
     ).json()
     toast.success(flash.message)
+    await fetchData()
   } catch (e) {
     console.error(e)
   }

@@ -44,10 +44,7 @@
       </div>
     </div>
 
-    <form
-      class="flex flex-wrap gap-3 p-5 w-full"
-      @submit.prevent="submitPayment"
-    >
+    <form class="flex flex-wrap gap-3 p-5 w-full" @submit.prevent="makePayment">
       <label class="flex flex-col relative w-full">
         <span class="font-bold mb-3">Kartes numurs</span>
         <input
@@ -88,7 +85,10 @@
 <script setup lang="ts">
 import type { CheckoutPageData } from '@/types/Data'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+
+const router = useRouter()
 
 const data = ref<CheckoutPageData>()
 
@@ -106,13 +106,18 @@ fetchData()
 const inputClasses =
   'text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
 
-const submitPayment = async () => {
-  const flash = await (
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/make-payment`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    })
-  ).json()
-  toast.success(flash.message)
+const makePayment = async () => {
+  try {
+    const flash = await (
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/make-payment`, {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      })
+    ).json()
+    toast.success(flash.message)
+    await router.push({ name: 'HOME' })
+  } catch (e) {
+    console.error(e)
+  }
 }
 </script>
