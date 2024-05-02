@@ -16,6 +16,7 @@
                    hx-replace-url="{{ path('home') }}"
                    onclick="setActiveLink(this)"
                    class="{{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} nav-link text-white hover:text-lime-200 hover:underline"
+                   data-url="home"
                 >Sākums</a>
             </li>
             <li>
@@ -25,6 +26,7 @@
                    hx-replace-url="{{ path('catalogue') }}"
                    onclick="setActiveLink(this)"
                    class="{{ app.request.attributes.get('_route') == 'catalogue' ? 'font-bold underline text-lime-200' : '' }} nav-link text-white hover:text-lime-200 hover:underline"
+                   data-url="catalogue"
                 >Katalogs</a>
             </li>
             <li>
@@ -32,8 +34,9 @@
                    hx-get="{{ path('cart_body') }}"
                    hx-target="#main"
                    hx-replace-url="{{ path('cart') }}"
-                   onclick="setActiveLink(this)"
+                   onclick="setActiveLink('cart')"
                    class="{{ app.request.attributes.get('_route') == 'cart' ? 'font-bold underline text-lime-200' : '' }} nav-link text-white hover:text-lime-200 hover:underline"
+                   data-url="cart"
                 >Grozs</a>
             </li>
         </ul>

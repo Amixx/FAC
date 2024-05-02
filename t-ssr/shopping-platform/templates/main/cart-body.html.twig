@@ -55,7 +55,7 @@
                    hx-get="{{ path('catalogue_body', {'page': 1}) }}"
                    hx-target="#main"
                    hx-replace-url="{{ path('catalogue') }}"
-                   onclick="setActiveLink(this)"
+                   onclick="setActiveLink('catalogue')"
                    class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase">
                     Turpināt iepirkties
                 </a>
@@ -63,7 +63,7 @@
                    hx-get="{{ path('checkout_body') }}"
                    hx-target="#main"
                    hx-replace-url="{{ path('checkout') }}"
-                   onclick="setActiveLink(this)"
+                   onclick="setActiveLink('checkout')"
                    class="bg-purple-500 hover:bg-purple-600 px-5 py-2 text-sm text-white uppercase">
                     Apmaksāt pasūtījumu
                 </a>
