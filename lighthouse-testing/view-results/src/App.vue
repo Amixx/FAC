@@ -1,7 +1,7 @@
 <template>
   <main class="container mx-auto px-4 py-8">
     <h1 class="font-bold mb-8 mt-4 text-center text-xl">
-      Lighthouse Testing Results
+      Lighthouse Testing Results - {{ site }}
     </h1>
 
     <div class="flex flex-wrap gap-8">
@@ -54,10 +54,10 @@
                 class="border border-gray-200 dark:text-white font-medium px-3 py-2 text-gray-900 whitespace-nowrap"
                 scope="row"
               >
-                Average
+                Vidējā vērtība
               </td>
               <td
-                v-for="i in item.items.length"
+                v-for="i in item.items[0].length - 1"
                 :key="i"
                 class="border border-gray-200 dark:text-white px-3 py-2 text-gray-900 whitespace-nowrap"
                 scope="row"
@@ -84,5 +84,7 @@
 <script setup lang="ts">
 import { getAllArchitectureData } from '@/helpers/data'
 
-const structuredAudits = getAllArchitectureData(import.meta.env.VITE_APP_DIR)
+const site = import.meta.env.VITE_APP_DIR
+
+const structuredAudits = getAllArchitectureData(site)
 </script>
