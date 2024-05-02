@@ -118,6 +118,7 @@
 import { ref } from 'vue'
 import type { CartPageData, OrderItem } from '@/types/Data'
 import { toast } from 'vue3-toastify'
+import { useHead } from '@unhead/vue'
 
 const data = ref<CartPageData>()
 
@@ -126,6 +127,14 @@ const fetchData = async () => {
     data.value = await (
       await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart`)
     ).json()
+    if (!data.value) return
+    useHead({
+      title: data.value.metadata.title,
+      meta: [
+        { name: 'description', content: data.value.metadata.metaDescription },
+        { name: 'keywords', content: data.value.metadata.metaKeywords },
+      ],
+    })
   } catch (e) {
     console.error(e)
   }

@@ -28,7 +28,10 @@
         <span class="font-bold text-lg">
           ${{ product.priceWithDiscount.toFixed(2) }}
           <span
-            v-if="product.priceWithDiscount !== product.price"
+            v-if="
+              parseFloat(product.priceWithDiscount.toFixed(2)) !==
+              parseFloat(product.price)
+            "
             class="line-through ml-2 text-gray-500 text-sm"
             >${{ product.price }}</span
           >

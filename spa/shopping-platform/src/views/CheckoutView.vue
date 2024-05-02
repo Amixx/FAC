@@ -87,6 +87,7 @@ import type { CheckoutPageData } from '@/types/Data'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+import { useHead } from '@unhead/vue'
 
 const router = useRouter()
 
@@ -97,6 +98,14 @@ const fetchData = async () => {
     data.value = await (
       await fetch(`${import.meta.env.VITE_API_BASE_URL}/checkout`)
     ).json()
+    if (!data.value) return
+    useHead({
+      title: data.value.metadata.title,
+      meta: [
+        { name: 'description', content: data.value.metadata.metaDescription },
+        { name: 'keywords', content: data.value.metadata.metaKeywords },
+      ],
+    })
   } catch (e) {
     console.error(e)
   }

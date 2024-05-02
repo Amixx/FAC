@@ -54,7 +54,7 @@ export type CataloguePageData =
       }
       itemsPerPage: number
       categories: ProductCategory[]
-      selectedCategory: string | null
+      selectedCategory?: string
       productsCount: number
       hasCurrentPage: boolean
       hasNextPage: boolean

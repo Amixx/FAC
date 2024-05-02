@@ -1,7 +1,9 @@
 #!/bin/bash
-export NITRO_SSL_CERT="`cat ./certs/thesis-project.local.io.pem`"
-export NITRO_SSL_KEY="`cat ./certs/thesis-project.local.io-key.pem`"
-export VITE_API_BASE_URL="https://thesis-project.local.io/api/json"
-export NODE_TLS_REJECT_UNAUTHORIZED=0
+if [ -f .env ]; then
+    export $(cat .env | xargs)
+fi
 
-npm run generate
+export NITRO_SSL_CERT="$(cat $NITRO_SSL_CERT_PATH)"
+export NITRO_SSL_KEY="$(cat $NITRO_SSL_KEY_PATH)"
+
+cd "$APP_DIR" && npm i --omit=dev && npm run generate

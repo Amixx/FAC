@@ -84,7 +84,7 @@
 import ProductCard from '@/components/ProductCard.vue'
 import type { CataloguePageData } from '@/types/Data'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { type RouteRecordName, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 
 const props = defineProps<{ page: number; category?: string }>()
