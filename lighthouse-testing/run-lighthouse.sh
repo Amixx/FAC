@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-  echo "Usage: $0 <site> <type>"
+  echo "Usage: $0 <site> <types>"
   exit 1
 fi
 
@@ -13,8 +13,8 @@ case "$site" in
      exit 1 ;;
 esac
 
+# Define pages based on the site
 if [ "$site" == "content-platform" ]; then
-  # Define pages
   pages=(
     ""
     "about-us"
@@ -22,9 +22,7 @@ if [ "$site" == "content-platform" ]; then
     "offers"
     "contacts"
   )
-fi
-if [ "$site" == "shopping-platform" ]; then
-  # Define pages
+elif [ "$site" == "shopping-platform" ]; then
   pages=(
     ""
     "catalogue"
@@ -35,13 +33,17 @@ fi
 
 mkdir -p "./results-data/$site"
 
-type="$2"
+# Split the types passed as a comma-separated string
+IFS=',' read -ra types <<< "$2"
 
-case "$type" in
-  t-ssr|spa|m-ssr|ssg|hda|all) ;;
-  *) echo "Error: Invalid type. Supported types are t-ssr, spa, m-ssr, ssg, hda, or all." >&2
-     exit 1 ;;
-esac
+# Validate each type
+for type in "${types[@]}"; do
+  case "$type" in
+    t-ssr|spa|m-ssr|ssg|hda) ;;
+    *) echo "Error: Invalid type $type. Supported types are t-ssr, hda, spa, m-ssr and ssg." >&2
+       exit 1 ;;
+  esac
+done
 
 base_url="https://thesis-project.local.io"
 
@@ -73,21 +75,11 @@ run_lighthouse() {
 #   --throttling.throughputKbps=4096
 }
 
-if [ "$type" == "all" ]; then
-  # Run Lighthouse script for all types
-  for current_type in "t-ssr" "spa" "m-ssr" "ssg" "hda"; do
-    for page in "${pages[@]}"; do
-      run_lighthouse "$current_type" "$page"
-    done
-  done
-else
-  # Run Lighthouse script for the specified type
+# Run Lighthouse script for each specified type
+for type in "${types[@]}"; do
   for page in "${pages[@]}"; do
     run_lighthouse "$type" "$page"
   done
-fi
-
-# Wait for all background processes to finish
-wait
+done
 
 echo "All Lighthouse tests completed."

@@ -17,6 +17,9 @@
   "dependencies": {
     "@unhead/vue": "^1.9.5",
     "@whitedigital-eu/eslint-config-wd": "^1.0.5",
+    "build": "^0.1.4",
+    "npm": "^10.7.0",
+    "run": "^1.5.0",
     "vite-plugin-mkcert": "^1.17.5",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
