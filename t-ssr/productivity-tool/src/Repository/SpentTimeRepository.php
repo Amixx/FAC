@@ -24,4 +24,10 @@ class SpentTimeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function remove(SpentTime $spentTime): void
+    {
+        $this->getEntityManager()->remove($spentTime);
+        $this->getEntityManager()->flush();
+    }
 }

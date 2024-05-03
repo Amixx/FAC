@@ -24,4 +24,10 @@ class TodoItemCategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function remove(TodoItemCategory $todoItemCategory): void
+    {
+        $this->getEntityManager()->remove($todoItemCategory);
+        $this->getEntityManager()->flush();
+    }
 }

@@ -2,55 +2,60 @@
 
 namespace App\Service;
 
-use App\Entity\Order;
 use App\Entity\SpentTime;
 use App\Entity\TodoItem;
 use App\Entity\TodoItemCategory;
-use App\Repository\OrderItemRepository;
-use App\Repository\OrderRepository;
-use App\Repository\ProductCategoryRepository;
-use App\Repository\ProductRepository;
 use App\Repository\SpentTimeRepository;
 use App\Repository\TodoItemCategoryRepository;
 use App\Repository\TodoItemRepository;
-use DateTime;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DataService
 {
     private TodoItemRepository $todoItemRepository;
     private TodoItemCategoryRepository $todoItemCategoryRepository;
     private SpentTimeRepository $spentTimeRepository;
+    private RequestStack $requestStack;
 
     public function __construct(
         TodoItemRepository         $todoItemRepository,
         TodoItemCategoryRepository $todoItemCategoryRepository,
         SpentTimeRepository        $spentTimeRepository,
+        RequestStack               $requestStack,
     )
     {
         $this->todoItemRepository = $todoItemRepository;
         $this->todoItemCategoryRepository = $todoItemCategoryRepository;
         $this->spentTimeRepository = $spentTimeRepository;
+        $this->requestStack = $requestStack;
     }
 
-    public function authenticate(string $username, string $password): ?string
+    public function authenticate($data): ?string
     {
         // simulate authentication
-        sleep(1);
+        sleep(0.5);
+        $this->requestStack->getSession()->set('is_authenticated', true);
         return 'todos';
     }
 
-    public function getTodos(int $page = 1): array
+    public function logout(): ?string
+    {
+        $this->requestStack->getSession()->remove('is_authenticated');
+        return 'authenticate';
+    }
+
+    public function getTodosData(int $lastPage = 1, bool $includeCompleted = false): array
     {
         $itemsPerPage = 10;
-        $todoItemsCount = $this->todoItemRepository->findTodoItemsCount();
-        $hasMoreItems = $todoItemsCount > ($itemsPerPage * $page);
-
-        $todoItems = $this->todoItemRepository->findTodoItems($page, $itemsPerPage);
+        $todoItemsCount = $this->todoItemRepository->findTodoItemsCount($includeCompleted);
+        $hasMoreItems = $todoItemsCount > ($itemsPerPage * $lastPage);
+        $todos = $this->todoItemRepository->findTodoItems($itemsPerPage * $lastPage, $includeCompleted);
 
         return [
-            'todoItems' => $todoItems,
-            'page' => $page,
+            'todos' => $todos,
+            'lastPage' => $lastPage,
             'hasMoreItems' => $hasMoreItems,
+            'includeCompleted' => $includeCompleted,
         ];
     }
 
@@ -68,25 +73,23 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Todo item added!',
+            'message' => 'Darāmais darbs pievienots!',
         ];
     }
 
-    public function updateTodo(int $id, $data): array
+    public function updateTodo(array $data): array
     {
-        $todoItem = $this->todoItemRepository->find($id);
-        $todoItem->setName($data['name']);
-        $todoItem->setDeadline($data['deadline']);
-        $todoItem->setImportant($data['important']);
-        $todoItem->setStatus($data['status']);
-        $todoItem->setCategory($data['category']);
-        $todoItem->setUpdatedAt();
+        $todoItem = $this->todoItemRepository->find($data['id']);
+        foreach ($data as $key => $value) {
+            if ($key == 'id') continue;
+            $todoItem->{'set' . ucfirst($key)}($value);
+        }
 
         $this->todoItemRepository->save($todoItem);
 
         return [
             'type' => 'success',
-            'message' => 'Todo item updated!',
+            'message' => 'Darāmais darbs atjaunots!',
         ];
     }
 
@@ -97,7 +100,7 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Todo item deleted!',
+            'message' => 'Darāmais darbs dzēsts!',
         ];
     }
 
@@ -112,7 +115,7 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Spent time added!',
+            'message' => 'Pavadītais laiks pievienots!',
         ];
     }
 
@@ -123,7 +126,7 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Spent time deleted!',
+            'message' => 'Pavadītais laiks dzēsts!',
         ];
     }
 
@@ -146,7 +149,7 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Todo category added!',
+            'message' => 'Darbu kategorija pievienota!',
         ];
     }
 
@@ -160,7 +163,7 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Todo category updated!',
+            'message' => 'Darbu kategorija atjaunota!',
         ];
     }
 
@@ -171,7 +174,7 @@ class DataService
 
         return [
             'type' => 'success',
-            'message' => 'Todo category deleted!',
+            'message' => 'Darbu kategorija dzēsta!',
         ];
     }
 

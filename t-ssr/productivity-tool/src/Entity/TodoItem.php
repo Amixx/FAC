@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TodoItemRepository::class)]
 class TodoItem
 {
-    const STATUS_TODO = 'todo';
+    const STATUS_TODO = 'TODO';
     const STATUS_IN_PROGRESS = 'IN_PROGRESS';
     const STATUS_DONE = 'DONE';
 
@@ -152,5 +152,14 @@ class TodoItem
         }
 
         return $this;
+    }
+
+    public function getStatusText(): string
+    {
+        return match ($this->status) {
+            self::STATUS_TODO => 'Nav iesākts',
+            self::STATUS_IN_PROGRESS => 'Iesākts',
+            self::STATUS_DONE => 'Pabeigts',
+        };
     }
 }

@@ -16,22 +16,46 @@ class TodoItemRepository extends ServiceEntityRepository
         parent::__construct($registry, TodoItem::class);
     }
 
-    public function findTodoItems(int $page = 1, int $itemsPerPage = 10): array
+    public function findTodoItems($maxResults = 10, bool $includeCompleted = false): array
     {
-        return $this->createQueryBuilder('t')
+        $queryBuilder = $this->createQueryBuilder('t')
             ->select('t')
-            ->orderBy('t.createdAt', 'DESC')
-            ->setMaxResults($itemsPerPage)
-            ->setFirstResult(($page - 1) * $itemsPerPage)
+            ->orderBy('t.deadline', 'ASC');
+
+        if (!$includeCompleted) {
+            $queryBuilder->andWhere('t.status != :status')
+                ->setParameter('status', TodoItem::STATUS_DONE);
+        }
+
+        return $queryBuilder->setMaxResults($maxResults)
             ->getQuery()
             ->getResult();
     }
 
-    public function findTodoItemsCount(): int
+    public function findTodoItemsCount(bool $includeCompleted = false): int
     {
-        return $this->createQueryBuilder('t')
+        $queryBuilder = $this->createQueryBuilder('t')
             ->select('count(t)')
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->andWhere('t.status != :status')
+            ->setParameter('status', TodoItem::STATUS_DONE);
+
+        if ($includeCompleted) {
+            $queryBuilder->orWhere('t.status = :status')
+                ->setParameter('status', TodoItem::STATUS_TODO);
+        }
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    public function save(TodoItem $todoItem): void
+    {
+        $this->getEntityManager()->persist($todoItem);
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(TodoItem $todoItem): void
+    {
+        $this->getEntityManager()->remove($todoItem);
+        $this->getEntityManager()->flush();
     }
 }
