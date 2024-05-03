@@ -1,0 +1,53 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %} {{ metadata.title }} {% endblock %}
+
+{% block meta %}
+    <meta name="title" content="{{ metadata.metaTitle }}">
+    <meta name="description" content="{{ metadata.metaDescription }}">
+    <meta name="keywords" content="{{ metadata.metaKeywords }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="flex flex-col space-y-4">
+                <img src="{{ product.images|first }}" alt="{{ product.title }}"
+                     class="w-full h-96 object-cover rounded-lg shadow-lg">
+                <div class="flex overflow-x-scroll hide-scroll-bar">
+                    <div class="flex flex-nowrap">
+                        {% for image in product.getImages %}
+                            <img class="inline-block h-24 mr-2 rounded-lg shadow" src="{{ image }}"
+                                 alt="Produkta attēls">
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1 class="text-3xl font-bold">{{ product.title }}</h1>
+                {% if product.category %}
+                    <span class="text-sm font-semibold text-gray-500">{{ product.category.name }}</span>
+                {% endif %}
+                <div class="mt-4">
+                    <span class="text-2xl font-semibold text-gray-800">${{ product.priceWithDiscount | number_format(2, '.', ',') }}</span>
+                    {% if product.discount %}
+                        <span class="ml-2 line-through text-gray-500">${{ product.price | number_format(2, '.', ',') }}</span>
+                    {% endif %}
+                </div>
+                <p class="mt-4 text-gray-700">{{ product.description }}</p>
+
+                <div class="mt-4">
+                    <span class="text-gray-700 font-semibold">Popularitāte: {{ product.popularity }}</span>
+                </div>
+
+                <button class="mt-6 px-6 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition duration-300">
+                    Ielikt grozā
+                </button>
+
+                <!-- Creation Date -->
+                <p class="text-xs text-gray-400 mt-4">Pievienots {{ product.createdAt|date('F j, Y') }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

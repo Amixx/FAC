@@ -1,0 +1,38 @@
+<div class="max-w-sm rounded overflow-hidden shadow-lg relative bg-white">
+    <a href="{{ path('product', {'id': product.id}) }}">
+        <!-- Product Image -->
+        <img class="w-full h-48 object-cover" src="{{ product.images|first }}" alt="{{ product.title }}">
+
+        <!-- Category Badge on Top of Image -->
+        {% if product.category %}
+            <div class="absolute top-0 left-0 bg-purple-500 text-white text-xs uppercase font-bold rounded-br-lg px-3 py-1">
+                {{ product.category.name }}
+            </div>
+        {% endif %}
+    </a>
+
+    <!-- Product Details -->
+    <div class="px-6 py-4">
+        <a href="{{ path('product', {'id': product.id}) }}">
+            <div class="font-bold text-xl mb-2">{{ product.title }}</div>
+            <p class="text-gray-700 text-base mb-4">
+                {{ product.description|slice(0, 80) ~ '...' }}
+            </p>
+        </a>
+        <div class="flex justify-between items-center">
+            <span class="text-lg font-bold">
+                ${{ product.priceWithDiscount | number_format(2, '.', ',') }}
+                {% if product.priceWithDiscount != product.price %}
+                    <span class="line-through text-sm text-gray-500 ml-2">${{ product.price | number_format(2, '.', ',') }}</span>
+                {% endif %}
+            </span>
+            <form action="{{ path('add-to-cart') }}" method="post">
+                <input type="hidden" name="productId" value="{{ product.id }}">
+                <button type="submit"
+                        class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1">
+                    Ielikt grozā
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
