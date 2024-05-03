@@ -18,9 +18,12 @@ class SpentTimeRepository extends ServiceEntityRepository
 
     public function findAll(): array
     {
+        // order first by the todo item id, then by created at
         return $this->createQueryBuilder('s')
             ->select('s')
-            ->orderBy('s.createdAt', 'ASC')
+            ->join('s.todoItem', 'todoItem')
+            ->addOrderBy('todoItem.id', 'ASC')
+            ->addOrderBy('s.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
     }
