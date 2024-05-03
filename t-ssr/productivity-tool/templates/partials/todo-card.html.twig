@@ -1,10 +1,16 @@
 <li class="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between leading-normal border
 {{ todo.status == 'DONE' ? 'opacity-50' : '' }}
-{{ todo.important ? 'border-yellow-500' : 'border-transparent-500' }}">
+{{ todo.important ? 'border-yellow-500' : 'border-transparent-500' }}"
+    id="todo-{{ todo.id }}">
     <div class="mb-4">
         <div class="flex gap-2 justify-between">
             <h2 class="text-gray-900 font-bold text-xl mb-2">{{ todo.name }}</h2>
-            <form method="POST" action="{{ path('todos_delete') }}">
+            <form method="POST"
+                  action="{{ path('todos_delete') }}"
+                  hx-post="{{ path('partial_todos_delete') }}"
+                  hx-target="#todo-{{ todo.id }}"
+                  hx-swap="outerHTML"
+            >
                 <input type="hidden" name="id" value="{{ todo.id }}">
                 <button type="submit" class="border border-red-500 hover:border-red-700 font-bold py-1 px-2 rounded">
                     🗑️
@@ -14,7 +20,12 @@
         <p class="text-gray-700 text-base">Termiņš: {{ todo.deadline|date('Y-m-d H:i') }}</p>
     </div>
     <div class="flex items-center">
-        <form method="POST" action="{{ path('todos_update') }}">
+        <form method="POST"
+              action="{{ path('todos_update') }}"
+              hx-post="{{ path('partial_todos_update') }}"
+              hx-target="#todo-{{ todo.id }}"
+              hx-swap="outerHTML"
+        >
             <input type="hidden" name="id" value="{{ todo.id }}">
             <input type="hidden" name="important" value="{{ todo.important ? 0 : 1 }}">
             <button type="submit"
@@ -22,15 +33,26 @@
         </form>
         <div class="ml-auto flex gap-2 items-center">
             {% if todo.status != 'TODO' %}
-                <form method="POST" action="{{ path('todos_update') }}">
+                <form method="POST"
+                      action="{{ path('todos_update') }}"
+                      hx-post="{{ path('partial_todos_update') }}"
+                      hx-target="#todo-{{ todo.id }}"
+                      hx-swap="outerHTML"
+                      hx-trigger="change from:.todo-{{ todo.id }}-checkbox-trigger"
+                >
                     <input type="hidden" name="id" value="{{ todo.id }}">
-                    <input type="hidden" name="status"
-                           value="{{ todo.status == 'DONE' ? 'IN_PROGRESS' : 'DONE' }}">
-                    <input type="checkbox" class="accent-sky-500 form-checkbox h-5 w-5 text-sky-600"
-                           onchange="this.form.submit()" {{ todo.status == 'DONE' ? 'checked' : '' }}>
+                    <input type="hidden" name="status" value="{{ todo.status == 'DONE' ? 'IN_PROGRESS' : 'DONE' }}">
+                    <input type="checkbox"
+                           class="accent-sky-500 form-checkbox h-5 w-5 text-sky-600 todo-{{ todo.id }}-checkbox-trigger"
+                            {{ todo.status == 'DONE' ? 'checked' : '' }}>
                 </form>
             {% else %}
-                <form method="POST" action="{{ path('todos_update') }}">
+                <form method="POST"
+                      action="{{ path('todos_update') }}"
+                      hx-post="{{ path('partial_todos_update') }}"
+                      hx-target="#todo-{{ todo.id }}"
+                      hx-swap="outerHTML"
+                >
                     <input type="hidden" name="id" value="{{ todo.id }}">
                     <input type="hidden" name="status" value="IN_PROGRESS">
                     <button type="submit"
@@ -39,7 +61,12 @@
                     </button>
                 </form>
             {% endif %}
-            <form method="POST" action="{{ path('todos_add_spent_time') }}">
+            <form method="POST"
+                  action="{{ path('todos_add_spent_time') }}"
+                  hx-post="{{ path('partial_todos_add_spent_time') }}"
+                  hx-target="#todo-{{ todo.id }}"
+                  hx-swap="outerHTML"
+            >
                 <input type="hidden" name="todoId" value="{{ todo.id }}">
                 <button type="submit"
                         class="border border-sky-500 hover:border-sky-700 font-bold py-1 px-2 rounded ml-2">

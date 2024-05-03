@@ -1,7 +1,12 @@
 <header class="container">
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="{{ path('todos') }}" class="self-center text-2xl font-semibold whitespace-nowrap">
+            <a href="{{ path('todos') }}"
+               hx-get="{{ path('todos_body') }}"
+               hx-target="#main"
+               hx-replace-url="{{ path('todos') }}"
+               onclick="setActiveLink('todos')"
+               class="self-center text-2xl font-semibold whitespace-nowrap">
                 Mērķu Meistars
             </a>
             <button data-collapse-toggle="navbar-default" type="button"
@@ -19,7 +24,12 @@
                     <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
                         <li>
                             <a href="{{ path('todos') }}"
-                               class="block py-2 px-3 md:p-0 {{ app.request.attributes.get('_route') == 'todos'
+                               hx-get="{{ path('todos_body') }}"
+                               hx-target="#main"
+                               hx-replace-url="{{ path('todos') }}"
+                               onclick="setActiveLink(this)"
+                               data-url="todos"
+                               class="nav-link block py-2 px-3 md:p-0 {{ app.request.attributes.get('_route') == 'todos'
                                ? 'text-white bg-sky-700 rounded md:bg-transparent md:text-sky-700'
                                : 'text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-sky-700' }}"
                                     {{ app.request.attributes.get('_route') == 'todos'? 'aria-current="page"': '' }}>
@@ -28,7 +38,12 @@
                         </li>
                         <li>
                             <a href="{{ path('todo_categories') }}"
-                               class="block py-2 px-3 md:p-0 {{ app.request.attributes.get('_route') == 'todo_categories'
+                               hx-get="{{ path('todo_categories_body') }}"
+                               hx-target="#main"
+                               hx-replace-url="{{ path('todo_categories') }}"
+                               onclick="setActiveLink(this)"
+                               data-url="todo_categories"
+                               class="nav-link block py-2 px-3 md:p-0 {{ app.request.attributes.get('_route') == 'todo_categories'
                                ? 'text-white bg-sky-700 rounded md:bg-transparent md:text-sky-700'
                                : 'text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-sky-700' }}"
                                     {{ app.request.attributes.get('_route') == 'todo_categories'? 'aria-current="page"': '' }}>
@@ -37,7 +52,12 @@
                         </li>
                         <li>
                             <a href="{{ path('spent_times') }}"
-                               class="block py-2 px-3 md:p-0 {{ app.request.attributes.get('_route') == 'spent_times'
+                               hx-get="{{ path('spent_times_body') }}"
+                               hx-target="#main"
+                               hx-replace-url="{{ path('spent_times') }}"
+                               onclick="setActiveLink(this)"
+                               data-url="spent_times"
+                               class="nav-link block py-2 px-3 md:p-0 {{ app.request.attributes.get('_route') == 'spent_times'
                                ? 'text-white bg-sky-700 rounded md:bg-transparent md:text-sky-700'
                                : 'text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-sky-700' }}"
                                     {{ app.request.attributes.get('_route') == 'spent_times'? 'aria-current="page"': '' }}>
