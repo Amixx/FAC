@@ -42,7 +42,7 @@
                 scope="row"
               >
                 <template v-if="typeof audit === 'object'">
-                  {{ audit.displayValue }}
+                  {{ msToSecondsWithThreeDecimals(audit.numericValue) }}
                 </template>
                 <template v-else>
                   {{ audit }}
@@ -63,13 +63,11 @@
                 scope="row"
               >
                 {{
-                  parseFloat(
-                    (
-                      item.items.reduce(
-                        (sum, audit) => sum + audit[i].numericValue,
-                        0,
-                      ) / item.items.length
-                    ).toFixed(4),
+                  msToSecondsWithThreeDecimals(
+                    item.items.reduce(
+                      (sum, audit) => sum + audit[i].numericValue,
+                      0,
+                    ) / item.items.length,
                   )
                 }}
               </td>
@@ -87,4 +85,7 @@ import { getAllArchitectureData } from '@/helpers/data'
 const site = import.meta.env.VITE_APP_DIR
 
 const structuredAudits = getAllArchitectureData(site)
+
+const msToSecondsWithThreeDecimals = (value: number) =>
+  Math.round((value * 10000) / 1000) / 10000
 </script>
