@@ -19,7 +19,7 @@ class SpentTime
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'spentTimes')]
+    #[ORM\ManyToOne(inversedBy: 'spentTimes', fetch: "EAGER")]
     #[ORM\JoinColumn(nullable: false)]
     private ?TodoItem $todoItem = null;
 

@@ -1,0 +1,86 @@
+<template>
+  <div class="container max-w-96 mx-auto p-4">
+    <h1 class="flex gap-4 items-center justify-between mb-4">
+      <span class="font-bold text-2xl text-gray-800">Darāmie darbi</span>
+      <router-link
+        class="hover:text-gray-700 hover:underline text-sky-500"
+        :to="{
+          name: 'TODOS',
+          query: { includeCompleted: (!includeCompleted).toString() },
+        }"
+      >
+        {{ includeCompleted ? 'Parādīt pabeigtos' : 'Paslēpt pabeigtos' }}
+      </router-link>
+    </h1>
+    <template v-if="data">
+      <ul class="flex flex-col gap-4">
+        <TodoCard
+          v-for="todo in data.todos"
+          :key="todo.id"
+          :todo="todo"
+          @todo-deleted="removeTodoFromList(todo.id)"
+          @todo-updated="updateTodoInList"
+        />
+        <li v-if="!data.todos.length">
+          <p>Netika atrasts neviens darāmais darbs.</p>
+        </li>
+      </ul>
+      <button
+        v-if="data.todos.length && data.hasMoreItems"
+        class="bg-white flex flex-col justify-between leading-normal mt-4 p-4 rounded-lg shadow-lg w-full"
+      >
+        <span class="font-bold text-sm">
+          <button
+            class="hover:text-gray-700 hover:underline text-sky-500"
+            @click="loadMoreItems"
+          >
+            Ielādēt vēl
+          </button>
+        </span>
+      </button>
+    </template>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { TodoItem, TodosPageData } from '@/types/Data'
+import TodoCard from '@/components/TodoCard.vue'
+
+const props = defineProps<{ includeCompleted: boolean }>()
+
+const data = ref<TodosPageData>()
+
+let lastPage = 1
+
+const fetchData = async () => {
+  try {
+    const url = new URL(
+      `${import.meta.env.VITE_API_BASE_URL}/todos`,
+      import.meta.env.VITE_API_BASE_URL,
+    )
+    url.searchParams.set('includeCompleted', props.includeCompleted ? '1' : '0')
+    url.searchParams.set('lastPage', lastPage.toString())
+
+    data.value = await (await fetch(url.toString())).json()
+  } catch (e) {
+    console.error(e)
+  }
+}
+fetchData()
+
+const loadMoreItems = async () => {
+  lastPage++
+  await fetchData()
+}
+
+const removeTodoFromList = (id: number) => {
+  if (!data.value) return
+  data.value.todos = data.value.todos.filter((todo) => todo.id !== id)
+}
+
+const updateTodoInList = (todo: TodoItem) => {
+  if (!data.value) return
+  data.value.todos = data.value.todos.map((t) => (t.id === todo.id ? todo : t))
+}
+</script>

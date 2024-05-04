@@ -57,13 +57,7 @@
         <!-- Creation Date -->
         <p class="mt-4 text-gray-400 text-xs">
           Pievienots
-          {{
-            new Date(data.product.createdAt).toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            })
-          }}
+          {{ new Date(data.product.createdAt).toLocaleDateString('lv-LV') }}
         </p>
       </div>
     </div>
