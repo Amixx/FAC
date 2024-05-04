@@ -4,12 +4,12 @@
       <div
         class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4"
       >
-        <router-link
+        <NuxtLink
           class="font-semibold self-center text-2xl whitespace-nowrap"
-          :to="{ name: 'TODOS' }"
+          to="/todos"
         >
           Mērķu Meistars
-        </router-link>
+        </NuxtLink>
         <button
           aria-controls="navbar-default"
           aria-expanded="false"
@@ -39,28 +39,19 @@
             class="bg-gray-50 border border-gray-100 flex flex-col font-medium md:bg-white md:border-0 md:flex-row md:mt-0 md:p-0 md:space-x-8 mt-4 p-4 rounded-lg rtl:space-x-reverse"
           >
             <li>
-              <router-link
-                class="block md:p-0 px-3 py-2"
-                :to="{ name: 'TODOS' }"
-              >
+              <NuxtLink class="block md:p-0 px-3 py-2" to="/todos">
                 Darāmie darbi
-              </router-link>
+              </NuxtLink>
             </li>
             <li>
-              <router-link
-                class="block md:p-0 px-3 py-2"
-                :to="{ name: 'TODO_CATEGORIES' }"
-              >
+              <NuxtLink class="block md:p-0 px-3 py-2" to="/todo-categories">
                 Darbu kategorijas
-              </router-link>
+              </NuxtLink>
             </li>
             <li>
-              <router-link
-                class="block md:p-0 px-3 py-2"
-                :to="{ name: 'SPENT_TIMES' }"
-              >
+              <NuxtLink class="block md:p-0 px-3 py-2" to="/spent-times">
                 Pavadītais laiks
-              </router-link>
+              </NuxtLink>
             </li>
             <li>
               <button class="block md:p-0 px-3 py-2" @click="logout">
@@ -75,19 +66,16 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { isAuthenticated } from '@/stores/globalStore'
 
 const router = useRouter()
 
 const logout = async () => {
   try {
-    const redirectRouteName = await (
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/logout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      })
-    ).json()
+    const redirectRouteName = await $fetch<string>(
+      `${import.meta.env.VITE_API_BASE_URL}/logout`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' } },
+    )
     isAuthenticated.value = false
     await router.push(`/${redirectRouteName}`)
   } catch (e) {

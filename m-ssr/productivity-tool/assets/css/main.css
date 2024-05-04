@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.router-link:not(.router-link-active) {
+    @apply text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-sky-700;
+}
+
+.router-link-active {
+    @apply text-white bg-sky-700 rounded md:bg-transparent md:text-sky-700;
+}

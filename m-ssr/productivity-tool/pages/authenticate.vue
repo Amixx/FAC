@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { isAuthenticated } from '@/stores/globalStore'
+import { isAuthenticated } from '~/stores/globalStore'
 
 const router = useRouter()
 
@@ -90,13 +90,14 @@ const password = ref('')
 
 const authenticate = async () => {
   try {
-    const redirectRouteName = (await (
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/authenticate`, {
+    const redirectRouteName = await $fetch<string>(
+      `${import.meta.env.VITE_API_BASE_URL}/authenticate`,
+      {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.value, password: password.value }),
-      })
-    ).json()) as string
+      },
+    )
     isAuthenticated.value = true
     await router.push(`/${redirectRouteName}`)
   } catch (e) {

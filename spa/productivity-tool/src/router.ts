@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { isAuthenticated } from '@/stores/useGlobalStore'
+import { isAuthenticated } from '@/stores/globalStore'
 import AuthenticateView from '@/views/AuthenticateView.vue'
 
 const router = createRouter({
