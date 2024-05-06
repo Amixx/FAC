@@ -8,8 +8,8 @@ fi
 site="$1"
 
 case "$site" in
-  content-platform|shopping-platform) ;;
-  *) echo "Error: Invalid site. Supported sites are content-platform, shopping-platform." >&2
+  content-platform|shopping-platform|productivity-tool) ;;
+  *) echo "Error: Invalid site. Supported sites are content-platform, shopping-platform, productivity-tool." >&2
      exit 1 ;;
 esac
 
@@ -28,6 +28,13 @@ elif [ "$site" == "shopping-platform" ]; then
     "catalogue"
     "cart"
     "checkout"
+  )
+elif [ "$site" == "productivity-tool" ]; then
+  pages=(
+    "authenticate"
+    "todos"
+    "todo-categories"
+    "spent-times"
   )
 fi
 

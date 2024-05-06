@@ -219,6 +219,7 @@ class MainController extends AbstractController
 
     private function denyAccessUnlessAuthenticated(): ?Response
     {
+//        return null;
         if (!$this->requestStack->getSession()->get('is_authenticated')) {
             return $this->redirectToRoute('authenticate');
         }
@@ -228,6 +229,7 @@ class MainController extends AbstractController
 
     private function denyAccessIfAuthenticated(): ?Response
     {
+//        return null;
         if ($this->requestStack->getSession()->get('is_authenticated')) {
             return $this->redirectToRoute('home');
         }

@@ -1,6 +1,8 @@
 import { isAuthenticated } from '~/stores/globalStore'
 
 export default defineNuxtRouteMiddleware((to) => {
+  // return
+
   let nextPath: string | null = null
 
   if (to.fullPath === '/') nextPath = '/authenticate'
