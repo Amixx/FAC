@@ -1,9 +1,0 @@
-<ul class="flex flex-col gap-4" id="todo-list">
-    {% for todo in todos %}
-        {% include 'partials/todo-card.html.twig' %}
-    {% else %}
-        <div class="bg-white rounded-lg shadow-lg p-4">
-            <p>Netika atrasts neviens darāmais darbs.</p>
-        </div>
-    {% endfor %}
-</ul>

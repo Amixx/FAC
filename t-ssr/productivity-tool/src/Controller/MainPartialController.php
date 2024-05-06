@@ -27,12 +27,6 @@ class MainPartialController extends AbstractController
         return $this->htmxRender('main/auth-body.html.twig', $this->dataService->authenticate($this->getRequest()->get('data')));
     }
 
-    #[Route('todos-body', name: 'todos_body')]
-    public function todosBody(): HtmxResponse
-    {
-        return $this->htmxRender('main/todos-body.html.twig', $this->dataService->getTodosData());
-    }
-
     #[Route('todo-categories-body', name: 'todo_categories_body')]
     public function todoCategoriesBody(): HtmxResponse
     {
