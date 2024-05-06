@@ -1,9 +1,11 @@
 import contentPlatformData from '@/helpers/contentPlatformData'
 import shoppingPlatformData from '@/helpers/shoppingPlatformData'
+import productivityToolData from '@/helpers/productivityToolData'
 
 const dataMapping = {
   'content-platform': contentPlatformData,
   'shopping-platform': shoppingPlatformData,
+  'productivity-tool': productivityToolData,
 }
 
 const metrics = [
@@ -17,7 +19,7 @@ const metrics = [
 ] as const
 
 export const getAllArchitectureData = (
-  site: 'content-platform' | 'shopping-platform',
+  site: 'content-platform' | 'shopping-platform' | 'productivity-tool',
 ) => {
   const { allArchitectureData, inpData } = dataMapping[site]
 
