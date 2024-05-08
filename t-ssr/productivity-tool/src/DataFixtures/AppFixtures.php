@@ -23,8 +23,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        // create 10 TodoItemCategory entities; 20 TodoItem entities and each TodoItem has a category
-        // then create 40 SpentTime entities, with each TodoItem having between 0 and 4 spent times
         $categories = [];
         for ($i = 0; $i < 10; $i++) {
             $categories[$i] = new TodoItemCategory();
