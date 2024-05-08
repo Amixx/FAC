@@ -33,16 +33,16 @@ export const getAllArchitectureData = (
         ]
 
       return {
-        audit: firstArchitecture[0].audits[auditId],
+        audit: firstArchitecture[0][0].audits[auditId],
         headers: Object.keys(allArchitectureData),
-        items: firstArchitecture.map((_, index) => [
-          '/' + firstArchitecture[index].requestedUrl.split('/').pop(),
-          ...Object.keys(allArchitectureData).map(
-            (key) =>
-              allArchitectureData[key as keyof typeof allArchitectureData][
-                index
-              ].audits[auditId],
-          ),
+        items: firstArchitecture[0].map((_, index) => [
+          '/' + firstArchitecture[index][0].requestedUrl.split('/').pop(),
+          ...Object.keys(allArchitectureData).map((key) => {
+            const items = allArchitectureData[
+              key as keyof typeof allArchitectureData
+            ][index].map((x) => x.audits[auditId])
+            return items
+          }),
         ]),
       }
     }),

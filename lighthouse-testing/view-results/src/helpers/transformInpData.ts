@@ -3,16 +3,17 @@ export const transformInpData = (
 ) => {
   return Object.entries(inpData).reduce(
     (acc, [key, value]) => {
-      acc[key as keyof typeof acc] = {
+      const val = {
         numericValue: value,
         displayValue: `${value} ms`,
       }
+      acc[key as keyof typeof acc] = new Array(5).fill(val)
       return acc
     },
     {} as Partial<
       Record<
         'tSsr' | 'hda' | 'spa' | 'mSsr' | 'ssg',
-        { numericValue: number; displayValue: string }
+        Array<{ numericValue: number; displayValue: string }>
       >
     >,
   )

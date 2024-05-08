@@ -74,12 +74,13 @@ run_lighthouse() {
 
   url="$url$page"
   echo "Running Lighthouse for URL: $url"
-  npx -y lighthouse "$url" \
-   --output=json \
-   --output-path="$results_dir"/"${page:-home}".json \
-   --only-categories=performance
-#   --throttling.rttMs=80 \
-#   --throttling.throughputKbps=4096
+   # Run the test 5 times to get a more accurate result
+  for run in {1..5}; do
+    npx -y lighthouse "$url" \
+     --output=json \
+     --output-path="$results_dir"/"${page:-home}"_"$run".json \
+     --only-categories=performance
+  done
 }
 
 # Run Lighthouse script for each specified type

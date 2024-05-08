@@ -36,16 +36,33 @@
               class="bg-white dark:bg-gray-800 pl-4"
             >
               <td
-                v-for="(audit, j) in subItem"
+                v-for="(measurements, j) in subItem"
                 :key="j"
                 class="border border-gray-200 first:dark:text-white first:font-medium first:text-gray-900 first:whitespace-nowrap px-3 py-2"
                 scope="row"
               >
-                <template v-if="typeof audit === 'object'">
-                  {{ msToSecondsWithThreeDecimals(audit.numericValue) }}
-                </template>
+                <div v-if="typeof measurements === 'object'" class="flex gap-2">
+                  <span class="flex flex-col leading-3 select-none text-[10px]">
+                    <span
+                      v-for="measurement in measurements"
+                      :key="measurement.id"
+                    >
+                      {{
+                        msToSecondsWithThreeDecimals(measurement.numericValue)
+                      }}
+                    </span>
+                  </span>
+                  <span>
+                    {{
+                      msToSecondsWithThreeDecimals(
+                        measurements.reduce((a, b) => a + b.numericValue, 0) /
+                          measurements.length,
+                      )
+                    }}
+                  </span>
+                </div>
                 <template v-else>
-                  {{ audit }}
+                  {{ measurements }}
                 </template>
               </td>
             </tr>
@@ -65,7 +82,13 @@
                 {{
                   msToSecondsWithThreeDecimals(
                     item.items.reduce(
-                      (sum, audit) => sum + audit[i].numericValue,
+                      (sum, audit) =>
+                        sum +
+                        (audit[i] as Array<{ numericValue: number }>).reduce(
+                          (a, b) => a + b.numericValue,
+                          0,
+                        ) /
+                          item.items.length,
                       0,
                     ) / item.items.length,
                   )
@@ -82,7 +105,10 @@
 <script setup lang="ts">
 import { getAllArchitectureData } from '@/helpers/data'
 
-const site = import.meta.env.VITE_APP_DIR
+const site = import.meta.env.VITE_APP_DIR as
+  | 'content-platform'
+  | 'shopping-platform'
+  | 'productivity-tool'
 
 const structuredAudits = getAllArchitectureData(site)
 
