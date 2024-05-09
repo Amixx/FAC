@@ -29,13 +29,16 @@ class DataService
         $this->postLikeRepository = $postLikeRepository;
     }
 
-    public function authenticate($data): ?string
+    public function authenticate($data): array
     {
         // simulate authentication
         sleep(0.5);
         $fakeUser = $this->userRepository->findFirst();
         $this->requestStack->getSession()->set('authenticated_user', $fakeUser);
-        return 'posts';
+        return [
+            'user' => $fakeUser,
+            'redirect' => 'posts',
+        ];
     }
 
     public function logout(): ?string
@@ -67,7 +70,9 @@ class DataService
     {
         $post = new Post();
         $post->setContent($data['content']);
-        $post->setAuthor($this->userRepository->find($this->requestStack->getSession()->get('authenticated_user')->getId()));
+        $post->setAuthor($this->userRepository->find(
+            $data['userId'] ?? $this->requestStack->getSession()->get('authenticated_user')->getId()
+        ));
         $repostedPost = $data['repostedPostId'] ? $this->postRepository->find($data['repostedPostId']) : null;
         $post->setRepostedPost($repostedPost);
         $post->setCreatedAt();
@@ -84,9 +89,11 @@ class DataService
     {
         $post = $this->postRepository->find($data['id']);
 
-        if ($post->hasBeenLikedBy($this->requestStack->getSession()->get('authenticated_user'))) {
+        $user = $this->userRepository->find($data['userId'] ?? $this->requestStack->getSession()->get('authenticated_user')->getId());
+
+        if ($post->hasBeenLikedBy($user->getId())) {
             $postLike = $this->postLikeRepository->findOneBy([
-                'author' => $this->requestStack->getSession()->get('authenticated_user'),
+                'author' => $user,
                 'post' => $post,
             ]);
             if ($postLike) {
@@ -95,7 +102,7 @@ class DataService
         } else {
             $postLike = new PostLike();
             $postLike->setPost($post);
-            $postLike->setAuthor($this->userRepository->find($this->requestStack->getSession()->get('authenticated_user')));
+            $postLike->setAuthor($user);
             $postLike->setCreatedAt();
             $this->postLikeRepository->save($postLike);
         }

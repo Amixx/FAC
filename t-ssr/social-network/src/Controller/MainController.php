@@ -39,9 +39,9 @@ class MainController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            $redirectRouteName = $this->dataService->authenticate($request->request);
-            if ($redirectRouteName) {
-                return $this->redirectToRoute($redirectRouteName);
+            $data = $this->dataService->authenticate($request->request);
+            if ($data) {
+                return $this->redirectToRoute($data['redirect']);
             }
         }
 

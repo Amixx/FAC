@@ -1,5 +1,4 @@
-<li class="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between leading-normal border
-{{ false ? 'border-yellow-500' : 'border-transparent-500' }}">
+<li class="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between leading-normal border">
     <div class="mb-4">
         <div class="flex gap-2 justify-between mb-2 items-center">
             <div class="text-sm">
@@ -25,7 +24,7 @@
             <form method="POST" action="{{ path('posts_toggle_like') }}" class="flex-grow">
                 <input type="hidden" name="id" value="{{ post.id }}">
                 <button type="submit" class="border text-red-700 font-bold py-1 px-2 rounded w-full">
-                    {{ post.hasBeenLikedBy(app.session.get('authenticated_user')) ? '💚' : '🩶' }}
+                    {{ post.hasBeenLikedBy(app.session.get('authenticated_user').id) ? '💚' : '🩶' }}
                 </button>
             </form>
             <a href="{{ path('posts_new', {'postId': post.id}) }}" class="flex-grow">

@@ -39,73 +39,33 @@ class JsonApiController extends AbstractController
         return $this->json($redirectRouteName);
     }
 
-    #[Route('/todos', name: 'json_todos')]
-    public function todos(Request $request): JsonResponse
+    #[Route('/posts', name: 'json_posts')]
+    public function posts(Request $request): JsonResponse
     {
-        $data = $request->query->all();
-        return $this->json($this->dataService->getTodosData(
-            $data['lastPage'] ?? 1,
-            $data['includeCompleted'] ?? false
-        ));
+        return $this->json($this->dataService->getPostsData($request->query->all()['lastPage'] ?? 1));
     }
 
-    #[Route('/todos/delete', name: 'json_todos_delete')]
-    public function deleteTodo(Request $request): JsonResponse
+    #[Route('/posts/new', name: 'json_posts_new', methods: ['POST'])]
+    public function newPost(Request $request): JsonResponse
     {
-        $flash = $this->dataService->deleteTodo($request->toArray()['id']);
-
-        return $this->json($flash);
+        return $this->json($this->dataService->createPost($request->toArray()));
     }
 
-    #[Route('/todos/update', name: 'json_todos_update')]
-    public function updateTodo(Request $request): JsonResponse
+    #[Route('/posts/toggle-like', name: 'json_posts_toggle_like', methods: ['POST'])]
+    public function togglePostLike(Request $request): JsonResponse
     {
-        $updatedTodo = $this->dataService->updateTodo($request->toArray());
-
-        return $this->json($updatedTodo);
+        return $this->json($this->dataService->togglePostLike($request->toArray()));
     }
 
-    #[Route('/todo-categories', name: 'json_todo_categories')]
-    public function todoCategories(): JsonResponse
+    #[Route('/posts/delete', name: 'json_posts_delete', methods: ['POST'])]
+    public function deletePost(Request $request): JsonResponse
     {
-        return $this->json($this->dataService->getTodoCategoriesData());
+        return $this->json($this->dataService->deletePost($request->toArray()['id']));
     }
 
-    #[Route('/todo-categories/delete', name: 'json_todo_categories_delete')]
-    public function deleteTodoCategory(Request $request): JsonResponse
+    #[Route('/user/{id}', name: 'json_user', methods: ['GET'])]
+    public function user(int $id): JsonResponse
     {
-        $flash = $this->dataService->deleteTodoCategory($request->toArray()['id']);
-
-        return $this->json($flash);
-    }
-
-    #[Route('/todo-categories/update', name: 'json_todo_categories_update')]
-    public function updateTodoCategory(Request $request): JsonResponse
-    {
-        $updatedTodoCategory = $this->dataService->updateTodoCategory($request->toArray());
-
-        return $this->json($updatedTodoCategory);
-    }
-
-    #[Route('/spent-times', name: 'json_spent_times')]
-    public function spentTimes(): JsonResponse
-    {
-        return $this->json($this->dataService->getSpentTimesData());
-    }
-
-    #[Route('/spent-times/delete', name: 'json_spent_times_delete')]
-    public function deleteSpentTime(Request $request): JsonResponse
-    {
-        $flash = $this->dataService->deleteSpentTime($request->toArray()['id']);
-
-        return $this->json($flash);
-    }
-
-    #[Route('/spent-times/update', name: 'json_spent_times_update')]
-    public function updateSpentTime(Request $request): JsonResponse
-    {
-        $updatedSpentTime = $this->dataService->updateSpentTime($request->toArray()['spentTime']);
-
-        return $this->json($updatedSpentTime);
+        return $this->json($this->dataService->getUserData($id));
     }
 }

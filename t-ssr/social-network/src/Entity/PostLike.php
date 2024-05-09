@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PostLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: PostLikeRepository::class)]
 class PostLike
@@ -22,6 +23,7 @@ class PostLike
 
     #[ORM\ManyToOne(inversedBy: 'postLikes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?Post $post = null;
 
     public function getId(): ?int

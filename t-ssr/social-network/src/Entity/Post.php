@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -23,12 +24,14 @@ class Post
     private ?User $author = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'repostedPosts')]
+    #[Ignore]
     private ?self $repostedPost = null;
 
     /**
      * @var Collection<int, self>
      */
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'repostedPost')]
+    #[Ignore]
     private Collection $repostedPosts;
 
     #[ORM\Column]
@@ -157,10 +160,10 @@ class Post
         return $this;
     }
 
-    public function hasBeenLikedBy(User $user): bool
+    public function hasBeenLikedBy(int $userId): bool
     {
-        return $this->postLikes->filter(function (PostLike $postLike) use ($user) {
-                return $postLike->getAuthor()->getId() === $user->getId();
+        return $this->postLikes->filter(function (PostLike $postLike) use ($userId) {
+                return $postLike->getAuthor()->getId() === $userId;
             })->count() > 0;
     }
 
