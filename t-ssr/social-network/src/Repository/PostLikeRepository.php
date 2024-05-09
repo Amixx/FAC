@@ -16,28 +16,15 @@ class PostLikeRepository extends ServiceEntityRepository
         parent::__construct($registry, PostLike::class);
     }
 
-//    /**
-//     * @return PostLike[] Returns an array of PostLike objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function save(PostLike $postLike): void
+    {
+        $this->getEntityManager()->persist($postLike);
+        $this->getEntityManager()->flush();
+    }
 
-//    public function findOneBySomeField($value): ?PostLike
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function remove(PostLike $postLike): void
+    {
+        $this->getEntityManager()->remove($postLike);
+        $this->getEntityManager()->flush();
+    }
 }

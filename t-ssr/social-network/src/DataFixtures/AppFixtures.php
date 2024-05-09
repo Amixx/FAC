@@ -5,14 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Post;
 use App\Entity\PostLike;
 use App\Entity\User;
-use DateInterval;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Faker\Factory;
-use App\Entity\TodoItemCategory;
-use App\Entity\TodoItem;
-use App\Entity\SpentTime;
 
 class AppFixtures extends Fixture
 {
@@ -36,6 +32,8 @@ class AppFixtures extends Fixture
             $users[$i]->setPhysicalAddress($this->faker->address);
             $users[$i]->setWorkplace($this->faker->jobTitle);
             $users[$i]->setWebsite($this->faker->url);
+            $users[$i]->setAvatar('https://picsum.photos/200?random=' . $i);
+            $users[$i]->setCreatedAt();
             $manager->persist($users[$i]);
         }
 
@@ -44,8 +42,9 @@ class AppFixtures extends Fixture
         $posts = [];
         for ($i = 0; $i < 500; $i++) {
             $posts[$i] = new Post();
-            $posts[$i]->setContent($this->faker->text);
+            $posts[$i]->setContent($this->faker->paragraphs(rand(1, 4), true));
             $posts[$i]->setAuthor($this->faker->randomElement($users));
+            $posts[$i]->setCreatedAt();
             $manager->persist($posts[$i]);
         }
 
@@ -55,6 +54,7 @@ class AppFixtures extends Fixture
             $postLike = new PostLike();
             $postLike->setAuthor($this->faker->randomElement($users));
             $postLike->setPost($this->faker->randomElement($posts));
+            $postLike->setCreatedAt();
             $manager->persist($postLike);
         }
 

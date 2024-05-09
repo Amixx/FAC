@@ -17,6 +17,9 @@ class PostLike
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     #[ORM\ManyToOne(inversedBy: 'postLikes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
@@ -36,6 +39,16 @@ class PostLike
         $this->author = $author;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getPost(): ?Post

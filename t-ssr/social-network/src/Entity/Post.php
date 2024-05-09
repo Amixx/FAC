@@ -31,10 +31,13 @@ class Post
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'repostedPost')]
     private Collection $repostedPosts;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     /**
      * @var Collection<int, PostLike>
      */
-    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'post')]
+    #[ORM\OneToMany(targetEntity: PostLike::class, mappedBy: 'post', orphanRemoval: true)]
     private Collection $postLikes;
 
     public function __construct()
@@ -114,6 +117,16 @@ class Post
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     /**
      * @return Collection<int, PostLike>
      */
@@ -142,5 +155,17 @@ class Post
         }
 
         return $this;
+    }
+
+    public function hasBeenLikedBy(User $user): bool
+    {
+        return $this->postLikes->filter(function (PostLike $postLike) use ($user) {
+                return $postLike->getAuthor()->getId() === $user->getId();
+            })->count() > 0;
+    }
+
+    public function isAuthoredBy(User $user): bool
+    {
+        return $this->author->getId() === $user->getId();
     }
 }

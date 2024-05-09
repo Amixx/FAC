@@ -1,0 +1,38 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %} Ziņas {% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4 min-h-screen">
+        <h1 class="mb-4 flex gap-4 justify-between items-center">
+            <span class="text-2xl font-bold text-gray-800">Jauna ziņa</span>
+        </h1>
+        <div class="mt-6">
+            {% if repostedPost %}
+                <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
+                    <p class="font-bold">Jūs pārpublicējat ierakstu: "{{ repostedPost.content[:50] ~ '...' }}"</p>
+                    <p>Oriģinālais autors: {{ repostedPost.author.email }};
+                        publicēts: {{ repostedPost.createdAt|date('Y-m-d H:i') }}</p>
+                </div>
+            {% endif %}
+
+            <form action="{{ path('posts_create') }}" method="POST" class="mt-5">
+                <div class="mb-4">
+                    <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Ziņas saturs</label>
+                    <textarea id="content" name="content" rows="10"
+                              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Kas jauns?..." required></textarea>
+                </div>
+
+                {% if repostedPost %}
+                    <input type="hidden" name="repostedPostId" value="{{ repostedPost.getId() }}">
+                {% endif %}
+
+                <button type="submit"
+                        class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Izveidot
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

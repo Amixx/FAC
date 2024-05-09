@@ -23,8 +23,8 @@ class MainController extends AbstractController
     #[Route('/')]
     public function home(): Response
     {
-        if ($this->requestStack->getSession()->get('is_authenticated')) {
-            return $this->redirectToRoute('todos');
+        if ($this->requestStack->getSession()->get('authenticated_user')) {
+            return $this->redirectToRoute('posts');
         } else {
             return $this->redirectToRoute('authenticate');
         }
@@ -35,7 +35,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessIfAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
 
         if ($request->isMethod('POST')) {
@@ -53,174 +53,100 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $redirectRouteName = $this->dataService->logout();
         if ($redirectRouteName) {
             return $this->redirectToRoute($redirectRouteName);
         }
-        return $this->redirectToRoute('todos');
+        return $this->redirectToRoute('posts');
     }
 
-    #[Route('/todos', name: 'todos')]
-    public function todos(Request $request): Response
+    #[Route('/posts', name: 'posts')]
+    public function posts(Request $request): Response
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
-        return $this->render('main/todos.html.twig', $this->dataService->getTodosData(
+        return $this->render('main/posts.html.twig', $this->dataService->getPostsData(
             $request->query->get('lastPage', 1),
-            $request->query->get('includeCompleted', false)
         ));
     }
 
-    #[Route('/todos/add', name: 'todos_add', methods: ['POST'])]
-    public function addTodo(Request $request): Response
+    #[Route('/posts/new/{postId}', name: 'posts_new', methods: ['GET'])]
+    public function newPost(Request $request, ?int $postId = null): Response
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
-        $flash = $this->dataService->addTodo($request->request);
+
+        return $this->render('main/new-post.html.twig', $this->dataService->getNewPostData($postId));
+    }
+
+    #[Route('/posts/create', name: 'posts_create', methods: ['POST'])]
+    public function createPost(Request $request): Response
+    {
+        $redirect = $this->denyAccessUnlessAuthenticated();
+        if ($redirect instanceof Response) {
+            return $redirect;
+        }
+        $flash = $this->dataService->createPost($request->request->all());
 
         $this->addFlash($flash['type'], $flash['message']);
 
         return $request->headers->get('referer')
             ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('todos');
+            : $this->redirectToRoute('posts');
     }
 
-    #[Route('/todos/update', name: 'todos_update', methods: ['POST'])]
-    public function updateTodo(Request $request): Response
+    #[Route('/posts/toggle-like', name: 'posts_toggle_like', methods: ['POST'])]
+    public function togglePostLike(Request $request): Response
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
-        $flash = $this->dataService->updateTodo($request->request->all());
+        $flash = $this->dataService->togglePostLike($request->request->all());
 
         $this->addFlash($flash['type'], $flash['message']);
 
         return $request->headers->get('referer')
             ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('todos');
+            : $this->redirectToRoute('posts');
     }
 
-    #[Route('/todos/delete', name: 'todos_delete', methods: ['POST'])]
-    public function deleteTodo(Request $request): Response
+    #[Route('/posts/delete', name: 'posts_delete', methods: ['POST'])]
+    public function deletePost(Request $request): Response
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
-        $flash = $this->dataService->deleteTodo($request->request->get('id'));
+        $flash = $this->dataService->deletePost($request->request->get('id'));
 
         $this->addFlash($flash['type'], $flash['message']);
 
         return $request->headers->get('referer')
             ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('todos');
+            : $this->redirectToRoute('posts');
     }
 
-    #[Route('/todos/add-spent-time', name: 'todos_add_spent_time', methods: ['POST'])]
-    public function addSpentTime(Request $request): Response
+    #[Route('/user/{id}', name: 'user')]
+    public function user(int $id): Response
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
-        $flash = $this->dataService->addSpentTime($request->request->get('todoId'), $request->request->get('duration'));
-
-        $this->addFlash($flash['type'], $flash['message']);
-
-        return $request->headers->get('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('todos');
-    }
-
-    #[Route('/todos/delete-spent-time', name: 'todos_delete_spent_time', methods: ['POST'])]
-    public function deleteSpentTime(Request $request): Response
-    {
-        $redirect = $this->denyAccessUnlessAuthenticated();
-        if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
-        }
-        $flash = $this->dataService->deleteSpentTime($request->request->get('id'));
-
-        $this->addFlash($flash['type'], $flash['message']);
-
-        return $request->headers->get('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('todos');
-    }
-
-    #[Route('/todo-categories', name: 'todo_categories')]
-    public function todoCategories(): Response
-    {
-        $redirect = $this->denyAccessUnlessAuthenticated();
-        if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
-        }
-        return $this->render('main/todo-categories.html.twig', $this->dataService->getTodoCategoriesData());
-    }
-
-    #[Route('/todo-categories/add', name: 'todo_categories_add', methods: ['POST'])]
-    public function addTodoCategory(Request $request): Response
-    {
-        $redirect = $this->denyAccessUnlessAuthenticated();
-        if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
-        }
-        $flash = $this->dataService->addTodoCategory($request->request);
-
-        $this->addFlash($flash['type'], $flash['message']);
-
-        return $this->redirectToRoute('todo_categories');
-    }
-
-    #[Route('/todo-categories/update', name: 'todo_categories_update', methods: ['POST'])]
-    public function updateTodoCategory(Request $request): Response
-    {
-        $redirect = $this->denyAccessUnlessAuthenticated();
-        if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
-        }
-        $flash = $this->dataService->updateTodoCategory($request->request);
-
-        $this->addFlash($flash['type'], $flash['message']);
-
-        return $this->redirectToRoute('todo_categories');
-    }
-
-    #[Route('/todo-categories/delete', name: 'todo_categories_delete', methods: ['POST'])]
-    public function deleteTodoCategory(Request $request): Response
-    {
-        $redirect = $this->denyAccessUnlessAuthenticated();
-        if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
-        }
-        $flash = $this->dataService->deleteTodoCategory($request->request->get('id'));
-
-        $this->addFlash($flash['type'], $flash['message']);
-
-        return $this->redirectToRoute('todo_categories');
-    }
-
-    #[Route('/spent-times', name: 'spent_times')]
-    public function spentTimes(): Response
-    {
-        $redirect = $this->denyAccessUnlessAuthenticated();
-        if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
-        }
-        return $this->render('main/spent-times.html.twig', $this->dataService->getSpentTimesData());
+        return $this->render('main/user.html.twig', $this->dataService->getUserData($id));
     }
 
     private function denyAccessUnlessAuthenticated(): ?Response
     {
 //        return null;
-        if (!$this->requestStack->getSession()->get('is_authenticated')) {
+        if (!$this->requestStack->getSession()->get('authenticated_user')) {
             return $this->redirectToRoute('authenticate');
         }
 
@@ -230,7 +156,7 @@ class MainController extends AbstractController
     private function denyAccessIfAuthenticated(): ?Response
     {
 //        return null;
-        if ($this->requestStack->getSession()->get('is_authenticated')) {
+        if ($this->requestStack->getSession()->get('authenticated_user')) {
             return $this->redirectToRoute('home');
         }
 
