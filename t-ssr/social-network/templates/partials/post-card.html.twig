@@ -1,4 +1,5 @@
-<li class="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between leading-normal border">
+<li class="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between leading-normal border"
+    id="post-card-{{ post.id }}">
     <div class="mb-4">
         <div class="flex gap-2 justify-between mb-2 items-center">
             <div class="text-sm">
@@ -21,20 +22,35 @@
     </div>
     <div class="flex flex-col gap-1">
         <div class="flex gap-2">
-            <form method="POST" action="{{ path('posts_toggle_like') }}" class="flex-grow">
+            <form method="POST"
+                  action="{{ path('posts_toggle_like') }}"
+                  hx-post="{{ path('partial_posts_toggle_like') }}"
+                  hx-target="#post-card-{{ post.id }}"
+                  hx-swap="outerHTML"
+                  class="flex-grow">
                 <input type="hidden" name="id" value="{{ post.id }}">
                 <button type="submit" class="border text-red-700 font-bold py-1 px-2 rounded w-full">
                     {{ post.hasBeenLikedBy(app.session.get('authenticated_user').id) ? '💚' : '🩶' }}
                 </button>
             </form>
-            <a href="{{ path('posts_new', {'postId': post.id}) }}" class="flex-grow">
+            <a href="{{ path('posts_new', {'postId': post.id}) }}"
+               hx-get="{{ path('partial_posts_new', {'postId': post.id}) }}"
+               hx-target="#main"
+               hx-replace-url="{{ path('posts_new', {'postId': post.id}) }}"
+               onclick="setActiveLink(null)"
+               class="flex-grow">
                 <button class="border text-emerald-500 font-bold py-1 px-2 rounded w-full">
                     Pārpublicēt
                 </button>
             </a>
         </div>
         {% if post.isAuthoredBy(app.session.get('authenticated_user')) %}
-            <form method="POST" action="{{ path('posts_delete') }}">
+            <form method="POST"
+                  action="{{ path('posts_delete') }}"
+                  hx-post="{{ path('partial_posts_delete') }}"
+                  hx-target="#post-card-{{ post.id }}"
+                  hx-confirm="Vai tiešām dzēst šo ziņu?"
+                  hx-swap="outerHTML">
                 <input type="hidden" name="id" value="{{ post.id }}">
                 <button type="submit" class="border text-red-700 font-bold py-1 px-2 rounded w-full">
                     Dzēst

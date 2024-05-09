@@ -111,6 +111,7 @@ class DataService
             $postLike->setAuthor($user);
             $postLike->setCreatedAt();
             $this->postLikeRepository->save($postLike);
+            $post->addPostLike($postLike);
         }
 
         return [
