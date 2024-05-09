@@ -35,7 +35,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessIfAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
 
         if ($request->isMethod('POST')) {
@@ -53,7 +53,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $redirectRouteName = $this->dataService->logout();
         if ($redirectRouteName) {
@@ -67,7 +67,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         return $this->render('main/todos.html.twig', $this->dataService->getTodosData(
             $request->query->get('lastPage', 1),
@@ -80,7 +80,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->addTodo($request->request);
 
@@ -96,7 +96,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->updateTodo($request->request->all());
 
@@ -112,7 +112,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->deleteTodo($request->request->get('id'));
 
@@ -128,7 +128,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->addSpentTime($request->request->get('todoId'), $request->request->get('duration'));
 
@@ -144,7 +144,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->deleteSpentTime($request->request->get('id'));
 
@@ -160,7 +160,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         return $this->render('main/todo-categories.html.twig', $this->dataService->getTodoCategoriesData());
     }
@@ -170,7 +170,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->addTodoCategory($request->request);
 
@@ -184,7 +184,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->updateTodoCategory($request->request);
 
@@ -198,7 +198,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         $flash = $this->dataService->deleteTodoCategory($request->request->get('id'));
 
@@ -212,7 +212,7 @@ class MainController extends AbstractController
     {
         $redirect = $this->denyAccessUnlessAuthenticated();
         if ($redirect instanceof Response) {
-            return $redirect;  // Perform the redirect if necessary
+            return $redirect;
         }
         return $this->render('main/spent-times.html.twig', $this->dataService->getSpentTimesData());
     }
