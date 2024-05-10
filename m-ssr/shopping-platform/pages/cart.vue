@@ -96,18 +96,18 @@
           >
         </div>
         <div class="flex gap-2 py-10">
-          <router-link
+          <NuxtLink
             class="bg-gray-500 hover:bg-gray-600 px-5 py-2 text-sm text-white uppercase"
             to="/catalogue"
           >
             Turpināt iepirkties
-          </router-link>
-          <router-link
+          </NuxtLink>
+          <NuxtLink
             class="bg-purple-500 hover:bg-purple-600 px-5 py-2 text-sm text-white uppercase"
             :to="{ name: 'checkout' }"
           >
             Apmaksāt pasūtījumu
-          </router-link>
+          </NuxtLink>
         </div>
       </div>
     </div>

@@ -2,12 +2,12 @@
   <div class="container mx-auto p-4">
     <h1 class="flex gap-4 items-center justify-between mb-4">
       <span class="font-bold text-2xl text-gray-800">Ziņas</span>
-      <router-link
+      <NuxtLink
         class="font-medium hover:text-gray-700 hover:underline text-emerald-500"
-        :to="{ name: 'NEW_POST' }"
+        to="/new-post"
       >
         Jauna ziņa
-      </router-link>
+      </NuxtLink>
     </h1>
     <ul
       v-if="data"
@@ -32,33 +32,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import PostCard from '@/components/PostCard.vue'
 import type { PostsPageData } from '@/types/Data'
 import { parseErrorAndShowMessage } from '@/helpers/global'
 
-const data = ref<PostsPageData>()
+const lastPage = ref(1)
 
-let lastPage = 1
-
-const fetchData = async () => {
-  try {
+const { data } = useFetch<PostsPageData>(
+  () => {
     const url = new URL(
       `${import.meta.env.VITE_API_BASE_URL}/posts`,
       import.meta.env.VITE_API_BASE_URL,
     )
-    url.searchParams.set('lastPage', lastPage.toString())
+    url.searchParams.set('lastPage', lastPage.value.toString())
+    return url.toString()
+  },
+  { onRequestError: parseErrorAndShowMessage },
+)
 
-    data.value = await (await fetch(url.toString())).json()
-  } catch (e) {
-    console.error(e)
-    parseErrorAndShowMessage(e)
-  }
-}
-fetchData()
-
-const loadMoreItems = async () => {
-  lastPage++
-  await fetchData()
-}
+const loadMoreItems = () => lastPage.value++
 </script>
