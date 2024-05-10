@@ -39,7 +39,7 @@ const dataMapping = {
   // TODO: measure
   'social-network': transformInpData({
     tSsr: [40, 30, 30, 20, 30],
-    hda: 30,
+    hda: [80, 40, 60, 60, 50],
     spa: [30, 30, 40, 20, 20],
     mSsr: [60, 30, 70, 40, 50],
   }),

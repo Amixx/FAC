@@ -13,14 +13,23 @@ const sitesToRoutes = {
     'todo-categories',
     'spent-times',
   ],
-  'social-network': ['authenticate', 'posts', 'new-post', 'user/21'],
+  'social-network': ['authenticate', 'posts', 'posts/new', 'user/21'],
 }
 
 const load = async (site) => {
   const data = {}
 
   const promises = architectures.flatMap((category, categoryIndex) => {
+    if (
+      category === 'ssg' &&
+      site !== 'content-platform' &&
+      site !== 'entertainment-platform'
+    ) {
+      return
+    }
+
     data[category] = []
+
     return sitesToRoutes[site].map((route, routeIndex) => {
       data[category].push([])
       return Promise.all(

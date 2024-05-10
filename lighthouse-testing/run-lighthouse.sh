@@ -40,7 +40,7 @@ elif [ "$site" == "social-network" ]; then
   pages=(
     "authenticate"
     "posts"
-    "new-post"
+    "posts/new"
     "user/21"
   )
 fi

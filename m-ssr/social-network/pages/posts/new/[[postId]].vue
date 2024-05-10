@@ -53,10 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import type { PostData } from '@/types/Data'
+import type { PostData } from '~/types/Data'
 import { toast } from 'vue3-toastify'
-import { parseErrorAndShowMessage } from '@/helpers/global'
-import { currentUser } from '@/stores/globalStore'
+import { parseErrorAndShowMessage } from '~/helpers/global'
+import { currentUser } from '~/stores/globalStore'
 
 const route = useRoute()
 

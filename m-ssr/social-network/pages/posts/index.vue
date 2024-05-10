@@ -32,9 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import PostCard from '@/components/PostCard.vue'
-import type { PostsPageData } from '@/types/Data'
-import { parseErrorAndShowMessage } from '@/helpers/global'
+import PostCard from '~/components/PostCard.vue'
+import type { PostsPageData } from '~/types/Data'
+import { parseErrorAndShowMessage } from '~/helpers/global'
 
 const lastPage = ref(1)
 
