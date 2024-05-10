@@ -25,7 +25,6 @@ export type User = {
   website: string
   createdAt: string
   avatar: string
-  posts: Post[]
 }
 
 export type PostsPageData = {
@@ -40,4 +39,12 @@ export type PostNewPageData = {
 
 export type UserPageData = {
   user: User
+}
+
+export type UserPostsData = {
+  posts: Post[]
+}
+
+export type PostData = {
+  post: Post
 }

@@ -34,6 +34,17 @@ class PostRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function findPostsByAuthor(int $authorId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->where('p.author = :authorId')
+            ->setParameter('authorId', $authorId)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function save(Post $post): void
     {
         $this->getEntityManager()->persist($post);

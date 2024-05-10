@@ -160,6 +160,7 @@ class Post
         return $this;
     }
 
+    #[Ignore]
     public function hasBeenLikedBy(int $userId): bool
     {
         return $this->postLikes->filter(function (PostLike $postLike) use ($userId) {
@@ -167,6 +168,7 @@ class Post
             })->count() > 0;
     }
 
+    #[Ignore]
     public function isAuthoredBy(User $user): bool
     {
         return $this->author->getId() === $user->getId();

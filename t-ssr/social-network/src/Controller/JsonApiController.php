@@ -45,6 +45,12 @@ class JsonApiController extends AbstractController
         return $this->json($this->dataService->getPostsData($request->query->all()['lastPage'] ?? 1));
     }
 
+    #[Route('/posts/{id}', name: 'json_post', methods: ['GET'])]
+    public function post(int $id): JsonResponse
+    {
+        return $this->json($this->dataService->getPostData($id));
+    }
+
     #[Route('/posts/new', name: 'json_posts_new', methods: ['POST'])]
     public function newPost(Request $request): JsonResponse
     {
@@ -67,5 +73,11 @@ class JsonApiController extends AbstractController
     public function user(int $id): JsonResponse
     {
         return $this->json($this->dataService->getUserData($id));
+    }
+
+    #[Route('/user/{id}/posts', name: 'json_user_posts', methods: ['GET'])]
+    public function userPosts(int $id): JsonResponse
+    {
+        return $this->json($this->dataService->getUserPostsData($id));
     }
 }

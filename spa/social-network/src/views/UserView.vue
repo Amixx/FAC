@@ -1,18 +1,18 @@
 <template>
-  <div v-if="data" class="container flex gap-4 mx-auto p-4">
+  <div v-if="userData" class="container flex gap-4 mx-auto p-4">
     <div
       class="bg-white dark:bg-gray-900 flex-1 max-w-sm mx-auto overflow-hidden rounded-lg shadow-lg"
     >
       <div class="border-b pb-6 px-4">
         <div class="my-4 text-center">
           <img
-            :alt="data.user.fullName"
+            :alt="userData.user.fullName"
             class="border-4 border-white dark:border-gray-800 h-32 mx-auto my-4 rounded-full w-32"
-            :src="data.user.avatar"
+            :src="userData.user.avatar"
           />
           <div class="py-2">
             <h3 class="dark:text-white font-bold mb-1 text-2xl text-gray-800">
-              {{ data.user.fullName }}
+              {{ userData.user.fullName }}
             </h3>
             <div
               class="dark:text-gray-300 inline-flex items-left text-gray-700 w-full"
@@ -30,7 +30,7 @@
                   d="M5.64 16.36a9 9 0 1 1 12.72 0l-5.65 5.66a1 1 0 0 1-1.42 0l-5.65-5.66zm11.31-1.41a7 7 0 1 0-9.9 0L12 19.9l4.95-4.95zM12 14a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
                 />
               </svg>
-              {{ data.user.physicalAddress }}
+              {{ userData.user.physicalAddress }}
             </div>
             <div
               class="dark:text-gray-300 inline-flex items-left text-gray-700 w-full"
@@ -69,7 +69,7 @@
                   />
                 </g>
               </svg>
-              {{ data.user.email }}
+              {{ userData.user.email }}
             </div>
             <div
               class="dark:text-gray-300 inline-flex items-left text-gray-700 w-full"
@@ -109,7 +109,7 @@
                   />
                 </g>
               </svg>
-              {{ data.user.workplace }}
+              {{ userData.user.workplace }}
             </div>
             <div
               class="dark:text-gray-300 inline-flex items-left text-gray-700 w-full"
@@ -149,17 +149,17 @@
                   />
                 </g>
               </svg>
-              {{ data.user.phoneNumber }}
+              {{ userData.user.phoneNumber }}
             </div>
             <div
               class="dark:text-gray-300 inline-flex items-left text-gray-700 w-full"
             >
               <a
                 class="hover:text-gray-700 hover:underline text-emerald-500"
-                :href="data.user.website"
+                :href="userData.user.website"
                 target="_blank"
               >
-                {{ data.user.website }}
+                {{ userData.user.website }}
               </a>
             </div>
           </div>
@@ -167,9 +167,16 @@
       </div>
     </div>
 
-    <ul class="flex-1 gap-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-      <PostCard v-for="post in sortedPosts" :key="post.id" :post="post" />
-      <li v-if="sortedPosts.length === 0">
+    <ul
+      v-if="userPostsData"
+      class="flex-1 gap-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
+    >
+      <PostCard
+        v-for="post in userPostsData.posts"
+        :key="post.id"
+        :post="post"
+      />
+      <li v-if="userPostsData.posts.length === 0">
         <div class="bg-white p-4 rounded-lg shadow-lg">
           <p>Netika atrasta neviena ziņa.</p>
         </div>
@@ -179,18 +186,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import PostCard from '@/components/PostCard.vue'
 import { parseErrorAndShowMessage } from '@/helpers/global'
-import { ref, computed } from 'vue'
-import type { UserPageData } from '@/types/Data'
+import { ref } from 'vue'
+import type { UserPageData, UserPostsData } from '@/types/Data'
 
 const props = defineProps<{ id: number }>()
 
-const data = ref<UserPageData>()
-const loadPosts = async () => {
+const userData = ref<UserPageData>()
+const loadUser = async () => {
   try {
-    data.value = (await (
+    userData.value = (await (
       await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/${props.id}`)
     ).json()) as UserPageData
   } catch (e) {
@@ -198,15 +204,18 @@ const loadPosts = async () => {
     parseErrorAndShowMessage(e)
   }
 }
-loadPosts()
+loadUser()
 
-const sortedPosts = computed(() => {
-  if (!data.value) return []
-  return data.value.user.posts
-    .slice()
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
-})
+const userPostsData = ref<UserPostsData>()
+const loadUserPosts = async () => {
+  try {
+    userPostsData.value = (await (
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/${props.id}/posts`)
+    ).json()) as UserPostsData
+  } catch (e) {
+    console.error(e)
+    parseErrorAndShowMessage(e)
+  }
+}
+loadUserPosts()
 </script>

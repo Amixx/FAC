@@ -5,18 +5,23 @@
     </h1>
     <div class="mt-6">
       <div
-        v-if="repostedPost"
+        v-if="repostedPostData"
         class="bg-blue-100 border-blue-500 border-l-4 p-4 text-blue-700"
         role="alert"
       >
         <p class="font-bold">
           Jūs pārpublicējat ierakstu: "{{
-            repostedPost.content.substring(0, 50) + '...'
+            repostedPostData.post.content.substring(0, 50) + '...'
           }}"
         </p>
         <p>
-          Oriģinālais autors: {{ repostedPost.author.email }}; publicēts:
-          {{ new Date(repostedPost.createdAt).toLocaleDateString('lv-LV') }}
+          Oriģinālais autors: {{ repostedPostData.post.author.email }};
+          publicēts:
+          {{
+            new Date(repostedPostData.post.createdAt).toLocaleDateString(
+              'lv-LV',
+            )
+          }}
         </p>
       </div>
 
@@ -36,14 +41,6 @@
             rows="10"
           ></textarea>
         </div>
-
-        <input
-          v-if="repostedPost"
-          name="repostedPostId"
-          type="hidden"
-          :value="repostedPost.id"
-        />
-
         <button
           class="bg-emerald-500 focus:outline-none focus:shadow-outline font-bold hover:bg-emerald-700 px-4 py-2 rounded text-white"
           type="submit"
@@ -57,20 +54,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Post } from '@/types/Data'
+import type { PostData } from '@/types/Data'
 import { toast } from 'vue3-toastify'
 import { parseErrorAndShowMessage } from '@/helpers/global'
+import { currentUser } from '@/stores/globalStore'
 
 const props = defineProps<{ postId?: number }>()
 
-const repostedPost = ref<Post | null>(null)
-
+const repostedPostData = ref<PostData | null>(null)
 const loadRepostedPost = async () => {
   if (!props.postId) return
   try {
-    repostedPost.value = await (
+    repostedPostData.value = (await (
       await fetch(`${import.meta.env.VITE_API_BASE_URL}/posts/${props.postId}`)
-    ).json()
+    ).json()) as PostData
   } catch (e) {
     console.error(e)
     parseErrorAndShowMessage(e)
@@ -82,12 +79,13 @@ const postContent = ref('')
 
 const createPost = async () => {
   const flash = (await (
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/posts`, {
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/posts/new`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content: postContent.value,
-        repostedPostId: repostedPost.value?.id,
+        repostedPostId: repostedPostData.value?.post.id,
+        userId: currentUser.value?.id,
       }),
     })
   ).json()) as { type: string; message: string }

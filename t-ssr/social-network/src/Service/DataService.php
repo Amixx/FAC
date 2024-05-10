@@ -60,6 +60,12 @@ class DataService
         ];
     }
 
+    public function getPostData(int $id): array
+    {
+        $post = $this->postRepository->find($id);
+        return ['post' => $post];
+    }
+
     public function getNewPostData(?int $postId): array
     {
         $repostedPost = $postId ? $this->postRepository->find($postId) : null;
@@ -73,7 +79,7 @@ class DataService
         $post->setAuthor($this->userRepository->find(
             $data['userId'] ?? $this->requestStack->getSession()->get('authenticated_user')->getId()
         ));
-        $repostedPost = $data['repostedPostId'] ? $this->postRepository->find($data['repostedPostId']) : null;
+        $repostedPost = isset($data['repostedPostId']) ? $this->postRepository->find($data['repostedPostId']) : null;
         $post->setRepostedPost($repostedPost);
         $post->setCreatedAt();
         $this->postRepository->save($post);
@@ -129,5 +135,12 @@ class DataService
     {
         $user = $this->userRepository->find($id);
         return ['user' => $user];
+    }
+
+    public function getUserPostsData(int $id): array
+    {
+        $posts = $this->postRepository->findPostsByAuthor($id);
+
+        return ['posts' => $posts];
     }
 }
