@@ -1,11 +1,48 @@
-import contentPlatformData from '@/helpers/contentPlatformData'
-import shoppingPlatformData from '@/helpers/shoppingPlatformData'
-import productivityToolData from '@/helpers/productivityToolData'
+import measurementsData from 'virtual:json-data'
+import { transformInpData } from '@/helpers/transformInpData'
+import type { StructuredOutput } from '@/types/Lighthouse'
+
+const measurements = measurementsData as Record<
+  (typeof sites)[number],
+  Record<(typeof categories)[number], StructuredOutput>
+>
+
+const categories = ['t-ssr', 'hda', 'spa', 'm-ssr', 'ssg'] as const
+const sites = [
+  'content-platform',
+  'shopping-platform',
+  'productivity-tool',
+  'social-network',
+] as const
 
 const dataMapping = {
-  'content-platform': contentPlatformData,
-  'shopping-platform': shoppingPlatformData,
-  'productivity-tool': productivityToolData,
+  'content-platform': transformInpData({
+    tSsr: 30,
+    hda: 40,
+    spa: 60,
+    mSsr: 30,
+    ssg: 30,
+  }),
+  'shopping-platform': transformInpData({
+    tSsr: 60,
+    hda: 60,
+    spa: 60,
+    mSsr: 80,
+  }),
+  'productivity-tool': transformInpData({
+    tSsr: 60,
+    hda: 30,
+    spa: 40,
+    mSsr: 30,
+  }),
+
+  // TODO: measure
+  'social-network': transformInpData({
+    tSsr: [40, 30, 30, 20, 30],
+    hda: 30,
+    spa: [30, 30, 40, 20, 20],
+    mSsr: [60, 30, 70, 40, 50],
+  }),
 }
 
 const metrics = [
@@ -18,10 +55,11 @@ const metrics = [
   'interactive',
 ] as const
 
-export const getAllArchitectureData = (
-  site: 'content-platform' | 'shopping-platform' | 'productivity-tool',
-) => {
-  const { allArchitectureData, inpData } = dataMapping[site]
+export const getAllArchitectureData = () => {
+  const { allArchitectureData, inpData } = {
+    allArchitectureData: measurements[import.meta.env.VITE_APP_DIR],
+    inpData: dataMapping[import.meta.env.VITE_APP_DIR],
+  }
 
   return [
     ...metrics.map((auditId) => {
@@ -31,6 +69,12 @@ export const getAllArchitectureData = (
             allArchitectureData,
           )[0] as keyof typeof allArchitectureData
         ]
+
+      console.log(
+        allArchitectureData,
+        firstArchitecture,
+        Object.keys(allArchitectureData),
+      )
 
       return {
         audit: firstArchitecture[0][0].audits[auditId],

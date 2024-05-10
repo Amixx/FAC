@@ -8,7 +8,7 @@ fi
 site="$1"
 
 case "$site" in
-  content-platform|shopping-platform|productivity-tool) ;;
+  content-platform|shopping-platform|productivity-tool|social-network) ;;
   *) echo "Error: Invalid site. Supported sites are content-platform, shopping-platform, productivity-tool." >&2
      exit 1 ;;
 esac
@@ -36,6 +36,13 @@ elif [ "$site" == "productivity-tool" ]; then
     "todo-categories"
     "spent-times"
   )
+elif [ "$site" == "social-network" ]; then
+  pages=(
+    "authenticate"
+    "posts"
+    "new-post"
+    "user/21"
+  )
 fi
 
 mkdir -p "./results-data/$site"
@@ -57,6 +64,7 @@ base_url="https://thesis-project.local.io"
 run_lighthouse() {
   local type="$1"
   local page="$2"
+  local encoded_page=$(echo "$page" | jq -sRr @uri)
 
   url="$base_url"
   if [ "$type" == "spa" ]; then
@@ -70,7 +78,7 @@ run_lighthouse() {
   fi
 
   results_dir="./results-data/$site/$type"
-  mkdir -p "$results_dir"
+  mkdir -p "$results_dir/${encoded_page:-home}"
 
   url="$url$page"
   echo "Running Lighthouse for URL: $url"
@@ -78,7 +86,7 @@ run_lighthouse() {
   for run in {1..5}; do
     npx -y lighthouse "$url" \
      --output=json \
-     --output-path="$results_dir"/"${page:-home}"_"$run".json \
+     --output-path="$results_dir"/"${encoded_page:-home}"_"$run".json \
      --only-categories=performance
   done
 }
