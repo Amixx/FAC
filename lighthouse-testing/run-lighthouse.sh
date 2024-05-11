@@ -87,7 +87,8 @@ run_lighthouse() {
     npx -y lighthouse "$url" \
      --output=json \
      --output-path="$results_dir"/"${encoded_page:-home}"_"$run".json \
-     --only-categories=performance
+     --only-categories=performance \
+     --chrome-flags="--headless"
   done
 }
 

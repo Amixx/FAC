@@ -109,4 +109,6 @@ const structuredAudits = getAllArchitectureData()
 
 const msToSecondsWithThreeDecimals = (value: number) =>
   Math.round((value * 10000) / 1000) / 10000
+
+const site = import.meta.env.VITE_APP_SITE
 </script>

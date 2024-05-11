@@ -79,13 +79,12 @@ export const getAllArchitectureData = () => {
       return {
         audit: firstArchitecture[0][0].audits[auditId],
         headers: Object.keys(allArchitectureData),
-        items: firstArchitecture[0].map((_, index) => [
-          '/' + firstArchitecture[index][0].requestedUrl.split('/').pop(),
+        items: new Array(firstArchitecture.length).fill(0).map((_, index) => [
+          new URL(firstArchitecture[index][0].requestedUrl).pathname,
           ...Object.keys(allArchitectureData).map((key) => {
-            const items = allArchitectureData[
-              key as keyof typeof allArchitectureData
-            ][index].map((x) => x.audits[auditId])
-            return items
+            return allArchitectureData[key as keyof typeof allArchitectureData][
+              index
+            ].map((x) => x.audits[auditId])
           }),
         ]),
       }

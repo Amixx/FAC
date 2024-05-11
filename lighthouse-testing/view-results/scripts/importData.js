@@ -5,14 +5,14 @@ const baseDir = '../results-data/'
 const architectures = ['t-ssr', 'hda', 'spa', 'm-ssr', 'ssg']
 const maxFiles = 5
 const sitesToRoutes = {
-  'content-platform': ['home', 'about-us', 'news', 'offers', 'contacts'],
-  'shopping-platform': ['catalogue', 'cart', 'checkout'],
-  'productivity-tool': [
-    'authenticate',
-    'todos',
-    'todo-categories',
-    'spent-times',
-  ],
+  // 'content-platform': ['home', 'about-us', 'news', 'offers', 'contacts'],
+  // 'shopping-platform': ['catalogue', 'cart', 'checkout'],
+  // 'productivity-tool': [
+  //   'authenticate',
+  //   'todos',
+  //   'todo-categories',
+  //   'spent-times',
+  // ],
   'social-network': ['authenticate', 'posts', 'posts/new', 'user/21'],
 }
 
@@ -34,7 +34,7 @@ const load = async (site) => {
       data[category].push([])
       return Promise.all(
         Array.from({ length: maxFiles }, (_, i) => {
-          const fileName = `${encodeURIComponent(route)}_${i + 1}.json`
+          const fileName = `${encodeURIComponent(`${route}\n`)}_${i + 1}.json`
           const filePath = path.join(`${baseDir}/${site}/`, category, fileName)
           return fs
             .readFile(filePath, 'utf8')
@@ -54,11 +54,17 @@ const load = async (site) => {
     })
   })
 
-  return await Promise.all(promises)
+  await Promise.all(promises)
+
+  return data
 }
 
 async function loadJsonData() {
-  return await Promise.all(Object.keys(sitesToRoutes).map((site) => load(site)))
+  return Object.fromEntries(
+    await Promise.all(
+      Object.keys(sitesToRoutes).map(async (site) => [site, await load(site)]),
+    ),
+  )
 }
 
 export default await loadJsonData()
