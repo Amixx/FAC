@@ -1,8 +1,12 @@
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 //@ts-expect-error importing js file
-import virtualJson from './scripts/importData'
+import loadLighthouseMeasurements from './scripts/importData'
+
+const env = loadEnv(process.cwd(), '')
+
+const data = await loadLighthouseMeasurements(env.VITE_APP_DIR)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,7 +19,7 @@ export default defineConfig({
       },
       load(id) {
         if (id === 'virtual:json-data') {
-          return `export default ${JSON.stringify(virtualJson)};`
+          return `export default ${JSON.stringify(data)};`
         }
       },
     },

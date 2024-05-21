@@ -3,8 +3,8 @@ import { transformInpData } from '@/helpers/transformInpData'
 import type { StructuredOutput } from '@/types/Lighthouse'
 
 const measurements = measurementsData as Record<
-  (typeof sites)[number],
-  Record<(typeof categories)[number], StructuredOutput>
+  (typeof categories)[number],
+  StructuredOutput
 >
 
 const categories = ['t-ssr', 'hda', 'spa', 'm-ssr', 'ssg'] as const
@@ -17,26 +17,25 @@ const sites = [
 
 const dataMapping = {
   'content-platform': transformInpData({
-    tSsr: 30,
-    hda: 40,
-    spa: 60,
-    mSsr: 30,
-    ssg: 30,
+    tSsr: [30, 30, 30, 30, 30],
+    hda: [30, 40, 30, 40, 30],
+    spa: [60, 60, 40, 50, 50],
+    mSsr: [40, 50, 60, 50, 50],
+    ssg: [30, 40, 40, 30, 30],
   }),
   'shopping-platform': transformInpData({
-    tSsr: 60,
-    hda: 60,
-    spa: 60,
-    mSsr: 80,
+    tSsr: [60, 60, 70, 70, 60],
+    hda: [70, 60, 60, 60, 60],
+    spa: [60, 80, 60, 50, 50],
+    mSsr: [80, 100, 80, 70, 80],
   }),
   'productivity-tool': transformInpData({
-    tSsr: 60,
-    hda: 30,
-    spa: 40,
-    mSsr: 30,
+    tSsr: [40, 30, 30, 40, 30],
+    hda: [30, 40, 30, 30, 30],
+    spa: [60, 50, 50, 60, 40],
+    mSsr: [60, 70, 60, 60, 60],
   }),
 
-  // TODO: measure
   'social-network': transformInpData({
     tSsr: [40, 30, 30, 20, 30],
     hda: [80, 40, 60, 60, 50],
@@ -57,7 +56,7 @@ const metrics = [
 
 export const getAllArchitectureData = () => {
   const { allArchitectureData, inpData } = {
-    allArchitectureData: measurements[import.meta.env.VITE_APP_DIR],
+    allArchitectureData: measurements,
     inpData: dataMapping[import.meta.env.VITE_APP_DIR],
   }
 
@@ -69,12 +68,6 @@ export const getAllArchitectureData = () => {
             allArchitectureData,
           )[0] as keyof typeof allArchitectureData
         ]
-
-      console.log(
-        allArchitectureData,
-        firstArchitecture,
-        Object.keys(allArchitectureData),
-      )
 
       return {
         audit: firstArchitecture[0][0].audits[auditId],

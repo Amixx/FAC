@@ -5,18 +5,18 @@ const baseDir = '../results-data/'
 const architectures = ['t-ssr', 'hda', 'spa', 'm-ssr', 'ssg']
 const maxFiles = 5
 const sitesToRoutes = {
-  // 'content-platform': ['home', 'about-us', 'news', 'offers', 'contacts'],
-  // 'shopping-platform': ['catalogue', 'cart', 'checkout'],
-  // 'productivity-tool': [
-  //   'authenticate',
-  //   'todos',
-  //   'todo-categories',
-  //   'spent-times',
-  // ],
+  'content-platform': ['', 'about-us', 'news', 'offers', 'contacts'],
+  'shopping-platform': ['', 'catalogue', 'cart', 'checkout'],
+  'productivity-tool': [
+    'authenticate',
+    'todos',
+    'todo-categories',
+    'spent-times',
+  ],
   'social-network': ['authenticate', 'posts', 'posts/new', 'user/21'],
 }
 
-const load = async (site) => {
+export default async function (site) {
   const data = {}
 
   const promises = architectures.flatMap((category, categoryIndex) => {
@@ -58,13 +58,3 @@ const load = async (site) => {
 
   return data
 }
-
-async function loadJsonData() {
-  return Object.fromEntries(
-    await Promise.all(
-      Object.keys(sitesToRoutes).map(async (site) => [site, await load(site)]),
-    ),
-  )
-}
-
-export default await loadJsonData()

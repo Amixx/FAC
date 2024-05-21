@@ -42,19 +42,19 @@
                 scope="row"
               >
                 <div v-if="typeof measurements === 'object'" class="flex gap-2">
-                  <span class="flex flex-col leading-3 select-none text-[10px]">
-                    <span
-                      v-for="measurement in measurements"
-                      :key="measurement.id"
-                    >
-                      {{
-                        msToSecondsWithThreeDecimals(measurement.numericValue)
-                      }}
-                    </span>
-                  </span>
+                  <!--                  <span class="flex flex-col leading-3 select-none text-[10px]">-->
+                  <!--                    <span-->
+                  <!--                      v-for="measurement in measurements"-->
+                  <!--                      :key="measurement.id"-->
+                  <!--                    >-->
+                  <!--                      {{-->
+                  <!--                        msToSecondsWithThreeDecimals(measurement.numericValue)-->
+                  <!--                      }}-->
+                  <!--                    </span>-->
+                  <!--                  </span>-->
                   <span>
                     {{
-                      msToSecondsWithThreeDecimals(
+                      formatMeasurement(
                         measurements.reduce((a, b) => a + b.numericValue, 0) /
                           measurements.length,
                       )
@@ -62,7 +62,7 @@
                   </span>
                 </div>
                 <template v-else>
-                  {{ measurements }}
+                  {{ urlToText(measurements) }}
                 </template>
               </td>
             </tr>
@@ -79,20 +79,7 @@
                 class="border border-gray-200 dark:text-white px-3 py-2 text-gray-900 whitespace-nowrap"
                 scope="row"
               >
-                {{
-                  msToSecondsWithThreeDecimals(
-                    item.items.reduce(
-                      (sum, audit) =>
-                        sum +
-                        (audit[i] as Array<{ numericValue: number }>).reduce(
-                          (a, b) => a + b.numericValue,
-                          0,
-                        ) /
-                          item.items.length,
-                      0,
-                    ) / item.items.length,
-                  )
-                }}
+                {{ formatMeasurement(calculateAverage(item, i)) }}
               </td>
             </tr>
           </tbody>
@@ -107,8 +94,53 @@ import { getAllArchitectureData } from '@/helpers/data'
 
 const structuredAudits = getAllArchitectureData()
 
-const msToSecondsWithThreeDecimals = (value: number) =>
-  Math.round((value * 10000) / 1000) / 10000
+const formatMeasurement = (value: number) => {
+  return (Math.round((value * 10000) / 1000) / 10000).toLocaleString('lv-LV', {
+    maximumFractionDigits: 4,
+  })
+}
 
-const site = import.meta.env.VITE_APP_SITE
+const site = import.meta.env.VITE_APP_DIR
+
+const urlToTextMapping = {
+  '/': 'Sākums',
+  '/about-us': 'Par mums',
+  '/news': 'Jaunumi',
+  '/offers': 'Piedāvājumi',
+  '/contacts': 'Kontakti',
+  '/cart': 'Grozs',
+  '/catalogue': 'Produktu katalogs',
+  '/checkout': 'Maksājums',
+  '/authenticate': 'Autentifikācija',
+  '/todos': 'Darāmās lietas',
+  '/todo-categories': 'Darbu kategorijas',
+  '/spent-times': 'Pavadītais laiks',
+  '/posts': 'Ziņas',
+  '/posts/new': 'Jauna ziņa',
+  '/user/21': 'Lietotājs',
+}
+
+const urlToText = (url: string) => {
+  const text =
+    url in urlToTextMapping
+      ? urlToTextMapping[url as keyof typeof urlToTextMapping]
+      : null
+
+  return text ? `${text} (${url})` : url
+}
+
+const calculateAverage = (item: any, i: number) => {
+  return (
+    item.items.reduce(
+      (sum, audit) =>
+        sum +
+        (audit[i] as Array<{ numericValue: number }>).reduce(
+          (a, b) => a + b.numericValue,
+          0,
+        ) /
+          item.items.length,
+      0,
+    ) / item.items.length
+  )
+}
 </script>

@@ -78,7 +78,7 @@ run_lighthouse() {
   fi
 
   results_dir="./results-data/$site/$type"
-  mkdir -p "$results_dir/${encoded_page:-home}"
+  mkdir -p "$results_dir"
 
   url="$url$page"
   echo "Running Lighthouse for URL: $url"
