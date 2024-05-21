@@ -47,9 +47,7 @@
                   <!--                      v-for="measurement in measurements"-->
                   <!--                      :key="measurement.id"-->
                   <!--                    >-->
-                  <!--                      {{-->
-                  <!--                        msToSecondsWithThreeDecimals(measurement.numericValue)-->
-                  <!--                      }}-->
+                  <!--                      {{ formatMeasurement(measurement.numericValue) }}-->
                   <!--                    </span>-->
                   <!--                  </span>-->
                   <span>
@@ -138,7 +136,7 @@ const calculateAverage = (item: any, i: number) => {
           (a, b) => a + b.numericValue,
           0,
         ) /
-          item.items.length,
+          audit[i].length,
       0,
     ) / item.items.length
   )
