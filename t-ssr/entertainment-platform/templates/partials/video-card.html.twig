@@ -1,0 +1,14 @@
+<li class="bg-gradient-to-r from-blue-600/75 to-red-600/75 rounded-xl shadow-xl p-6 flex flex-col justify-between leading-relaxed border border-gray-300 transform transition-transform hover:scale-105">
+    <a href="{{ path('video', {'id': video.id}) }}" class="cursor-pointer">
+        <div class="flex gap-4 justify-between mb-4 items-center">
+            <div class="text-xs text-white">
+                <p class="italic">Publicēts: {{ video.createdAt|date('Y-m-d H:i') }}</p>
+            </div>
+        </div>
+        <p class="text-xl font-semibold text-white mb-2">{{ video.title }}</p>
+        <p class="text-white mb-4">{{ video.description }}</p>
+        <img src="http://img.youtube.com/vi/{{ video.youtubeId }}/0.jpg"
+             alt="{{ video.title }}"
+             class="w-full h-auto rounded-lg shadow-md">
+    </a>
+</li>
