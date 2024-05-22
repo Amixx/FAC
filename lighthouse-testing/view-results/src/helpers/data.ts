@@ -1,3 +1,4 @@
+//@ts-ignore
 import measurementsData from 'virtual:json-data'
 import { transformInpData } from '@/helpers/transformInpData'
 import type { StructuredOutput } from '@/types/Lighthouse'
@@ -8,12 +9,6 @@ const measurements = measurementsData as Record<
 >
 
 const categories = ['t-ssr', 'hda', 'spa', 'm-ssr', 'ssg'] as const
-const sites = [
-  'content-platform',
-  'shopping-platform',
-  'productivity-tool',
-  'social-network',
-] as const
 
 const dataMapping = {
   'content-platform': transformInpData({
@@ -35,7 +30,13 @@ const dataMapping = {
     spa: [60, 50, 50, 60, 40],
     mSsr: [60, 70, 60, 60, 60],
   }),
-
+  'entertainment-platform': transformInpData({
+    tSsr: [60, 100, 70, 50, 60],
+    hda: [90, 60, 60, 50, 60],
+    spa: [60, 80, 60, 70, 60],
+    mSsr: [80, 90, 70, 70, 90],
+    ssg: [80, 100, 70, 80, 70],
+  }),
   'social-network': transformInpData({
     tSsr: [40, 30, 30, 20, 30],
     hda: [80, 40, 60, 60, 50],

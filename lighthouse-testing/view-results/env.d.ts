@@ -5,6 +5,7 @@ interface ImportMetaEnv {
     | 'content-platform'
     | 'shopping-platform'
     | 'productivity-tool'
+    | 'entertainment-platform'
     | 'social-network'
 }
 

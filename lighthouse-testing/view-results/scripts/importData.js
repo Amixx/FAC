@@ -13,6 +13,7 @@ const sitesToRoutes = {
     'todo-categories',
     'spent-times',
   ],
+  'entertainment-platform': ['authenticate', '', 'video/1'],
   'social-network': ['authenticate', 'posts', 'posts/new', 'user/21'],
 }
 

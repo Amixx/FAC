@@ -116,6 +116,7 @@ const urlToTextMapping = {
   '/posts': 'Ziņas',
   '/posts/new': 'Jauna ziņa',
   '/user/21': 'Lietotājs',
+  '/video/1': 'Video skatīšana',
 }
 
 const urlToText = (url: string) => {
