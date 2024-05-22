@@ -34,15 +34,14 @@ class VideoRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    public function save(Video $video): void
+    public function findRelatedVideos(int $id): array
     {
-        $this->getEntityManager()->persist($video);
-        $this->getEntityManager()->flush();
-    }
-
-    public function remove(Video $video): void
-    {
-        $this->getEntityManager()->remove($video);
-        $this->getEntityManager()->flush();
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->where('p.id != :id')
+            ->setParameter('id', $id)
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
     }
 }

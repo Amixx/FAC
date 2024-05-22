@@ -57,7 +57,9 @@ class DataService
 
     public function getVideoData(int $id): array
     {
-        $video = $this->videoRepository->find($id);
-        return ['video' => $video];
+        return [
+            'video' => $this->videoRepository->find($id),
+            'relatedVideos' => $this->videoRepository->findRelatedVideos($id),
+        ];
     }
 }
