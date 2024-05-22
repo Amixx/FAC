@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/api/json')]
 class JsonApiController extends AbstractController
@@ -43,5 +44,11 @@ class JsonApiController extends AbstractController
     public function videos(Request $request): JsonResponse
     {
         return $this->json($this->dataService->getVideosData($request->query->all()['lastPage'] ?? 1));
+    }
+
+    #[Route('/video/{id}', name: 'json_video', methods: ['GET'])]
+    public function video(int $id): JsonResponse
+    {
+        return $this->json($this->dataService->getVideoData($id));
     }
 }

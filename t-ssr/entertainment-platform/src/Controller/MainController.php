@@ -72,14 +72,14 @@ class MainController extends AbstractController
         if ($redirect instanceof Response) {
             return $redirect;
         }
-        
+
         return $this->render('main/video.html.twig', $this->dataService->getVideoData($id));
     }
 
     private function denyAccessUnlessAuthenticated(): ?Response
     {
-//        $this->dataService->authenticate([]);
-//        return null;
+        $this->dataService->authenticate([]);
+        return null;
         if (!$this->requestStack->getSession()->get('authenticated_user')) {
             return $this->redirectToRoute('authenticate');
         }
@@ -89,8 +89,8 @@ class MainController extends AbstractController
 
     private function denyAccessIfAuthenticated(): ?Response
     {
-//        $this->dataService->authenticate([]);
-//        return null;
+        $this->dataService->authenticate([]);
+        return null;
         if ($this->requestStack->getSession()->get('authenticated_user')) {
             return $this->redirectToRoute('home');
         }
