@@ -3,17 +3,21 @@
 namespace App\Controller;
 
 use App\Service\JsonFileReaderService;
+use Htmxfony\Controller\HtmxControllerTrait;
+use Htmxfony\Response\HtmxResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
+    use HtmxControllerTrait;
+
     private array $data;
 
     public function __construct()
     {
-        $this->data = JsonFileReaderService::readAndParseJson( __DIR__ . '/../../data/data.json');
+        $this->data = JsonFileReaderService::readAndParseJson(__DIR__ . '/../../data/data.json');
     }
 
     #[Route('/', name: 'home')]

@@ -9,43 +9,5 @@
 {% endblock %}
 
 {% block content %}
-    <div class="relative">
-        <img
-                class="absolute inset-0 h-full w-full object-cover"
-                src="{{ data.images[0].mob }}"
-                srcset="{{ data.images[0].mob }} 360w, {{ data.images[0].desk }}"
-                alt="hero">
-        <div class="absolute inset-0 bg-black opacity-70"></div>
-        <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-            <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">{{ data.title }}</h1>
-            <p class="mt-6 text-xl text-white max-w-3xl">{{ data.content }}</p>
-        </div>
-    </div>
-
-    <section class="px-6 py-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="rounded overflow-hidden shadow-lg p-6 bg-white">
-                <h2 class="font-bold text-xl mb-2">E-pasts</h2>
-                <p class="text-gray-700 text-base">
-                    <a href="mailto:{{ data.contact_info.email }}"
-                       class="text-blue-500 hover:text-blue-700">{{ data.contact_info.email }}</a>
-                </p>
-            </div>
-            <div class="rounded overflow-hidden shadow-lg p-6 bg-white">
-                <h2 class="font-bold text-xl mb-2">Telefons</h2>
-                <p class="text-gray-700 text-base">
-                    <a href="tel:{{ data.contact_info.phone }}"
-                       class="text-blue-500 hover:text-blue-700">{{ data.contact_info.phone }}</a>
-                </p>
-            </div>
-            <div class="rounded overflow-hidden shadow-lg p-6 bg-white">
-                <h2 class="font-bold text-xl mb-2">Adrese</h2>
-                <p class="text-gray-700 text-base">
-                    <a href="https://www.google.com/maps/search/?api=1&query={{ data.contact_info.address|url_encode }}"
-                       target="_blank" class="text-blue-500 hover:text-blue-700">{{ data.contact_info.address }}</a>
-                </p>
-            </div>
-        </div>
-    </section>
-    </section>
+    {{ include('main/contacts-body.html.twig', { data: data }) }}
 {% endblock %}

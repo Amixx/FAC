@@ -1,25 +1,42 @@
 <header class="container">
     <nav class="bg-purple-700 text-white shadow-md flex justify-between items-center p-4">
-        <a href="{{ path('home') }}" class="text-2xl font-bold">
+        <a href="{{ path('home') }}"
+           hx-get="{{ path('home_body') }}"
+           hx-target="#main"
+           hx-replace-url="{{ path('home') }}"
+           onclick="setActiveLink(this)"
+           class="text-2xl font-bold">
             Apģērbi.lv
         </a>
         <ul class="flex gap-4 flex-wrap">
             <li>
-                <a
-                        href="{{ path('home') }}"
-                        class="{{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('home') }}"
+                   hx-get="{{ path('home_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('home') }}"
+                   onclick="setActiveLink(this)"
+                   class="{{ app.request.attributes.get('_route') == 'home' ? 'font-bold underline text-lime-200' : '' }} nav-link text-white hover:text-lime-200 hover:underline"
+                   data-url="home"
                 >Sākums</a>
             </li>
             <li>
-                <a
-                        href="{{ path('catalogue') }}"
-                        class="{{ app.request.attributes.get('_route') == 'catalogue' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('catalogue') }}"
+                   hx-get="{{ path('catalogue_body', {'page': 1}) }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('catalogue') }}"
+                   onclick="setActiveLink(this)"
+                   class="{{ app.request.attributes.get('_route') == 'catalogue' ? 'font-bold underline text-lime-200' : '' }} nav-link text-white hover:text-lime-200 hover:underline"
+                   data-url="catalogue"
                 >Katalogs</a>
             </li>
             <li>
-                <a
-                        href="{{ path('cart') }}"
-                        class="{{ app.request.attributes.get('_route') == 'cart' ? 'font-bold underline text-lime-200' : '' }} text-white hover:text-lime-200 hover:underline"
+                <a href="{{ path('cart') }}"
+                   hx-get="{{ path('cart_body') }}"
+                   hx-target="#main"
+                   hx-replace-url="{{ path('cart') }}"
+                   onclick="setActiveLink('cart')"
+                   class="{{ app.request.attributes.get('_route') == 'cart' ? 'font-bold underline text-lime-200' : '' }} nav-link text-white hover:text-lime-200 hover:underline"
+                   data-url="cart"
                 >Grozs</a>
             </li>
         </ul>

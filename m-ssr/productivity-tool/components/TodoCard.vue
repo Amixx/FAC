@@ -131,14 +131,14 @@ const updateTodo = async (
     const data = await $fetch<{
       type: string
       message: string
-      updatedTodo: TodoItem
+      todo: TodoItem
     }>(`${import.meta.env.VITE_API_BASE_URL}/todos/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: props.todo.id, ...todo }),
     })
     toast.success(data.message)
-    callback(data.updatedTodo)
+    callback(data.todo)
   } catch (e) {
     console.error(e)
     parseErrorAndShowMessage(e)

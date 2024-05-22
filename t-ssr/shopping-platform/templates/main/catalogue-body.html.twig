@@ -1,0 +1,30 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-wrap -mx-4">
+        <!-- Sidebar for Filters -->
+        <div class="w-full md:w-1/4 px-4 mb-4 md:mb-0">
+            <div class="bg-white p-3 rounded-lg shadow-lg">
+                <h3 class="font-bold text-xl mb-4">Filtri</h3>
+                <form class="mb-4">
+                    <label for="categoryFilter"
+                           class="block text-gray-700 text-sm font-bold mb-2">Kategorija</label>
+                    <select id="categoryFilter"
+                            name="category"
+                            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option {{ selectedCategory == '' ? 'selected' : '' }} value="">Visas
+                            kategorijas
+                        </option>
+                        {% for category in categories %}
+                            <option {{ selectedCategory == category.name ? 'selected' : '' }}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit"
+                            class="mt-4 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1">
+                        Lietot
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% include 'main/catalogue-products.html.twig' %}
+    </div>
+</div>

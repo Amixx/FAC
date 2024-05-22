@@ -44,7 +44,7 @@ class DataService
         return 'authenticate';
     }
 
-    public function getTodosData(int $lastPage, bool $includeCompleted): array
+    public function getTodosData(int $lastPage = 1, bool $includeCompleted = false): array
     {
         $itemsPerPage = 10;
         $todoItemsCount = $this->todoItemRepository->findTodoItemsCount($includeCompleted);
@@ -90,7 +90,7 @@ class DataService
         return [
             'type' => 'success',
             'message' => 'Darāmais darbs atjaunots!',
-            'updatedTodo' => $todoItem,
+            'todo' => $todoItem,
         ];
     }
 

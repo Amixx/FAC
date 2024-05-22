@@ -10,7 +10,7 @@
 </head>
 <body class="min-h-screen bg-slate-100 flex items-center justify-center flex-col max-w-screen-2xl m-auto">
 {% include 'layout/header.html.twig' %}
-<main class="container bg-white">
+<main class="container bg-white" id="main">
     {% for message in app.flashes('success') %}
         <div class="p-4 mb-4 rounded-md text-sm font-medium shadow-md bg-green-100 text-green-800">
             {{ message }}
@@ -19,5 +19,8 @@
     {% block content %}{% endblock %}
 </main>
 {% include 'layout/footer.html.twig' %}
+{% block javascripts %}
+    {% block importmap %}{{ importmap('app') }}{% endblock %}
+{% endblock %}
 </body>
 </html>

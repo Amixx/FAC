@@ -1,0 +1,54 @@
+<div class="container mx-auto p-4 max-w-[700px]">
+    <h1 class="mb-4 flex gap-4 justify-between items-center">
+        <span class="text-2xl font-bold text-gray-800 ">Darbu kategorijas</span>
+        <a href="#">➕</a>
+    </h1>
+    <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Nosaukums
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Krāsa
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Darbības
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in todoCategories %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    id="todo-category-{{ category.id }}">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ category.name }}
+                    </th>
+                    <td class="px-6 py-4">
+                            <span style="background: {{ category.color }}"
+                                  class="inline-block w-6 h-6 rounded-full"></span>
+                    </td>
+                    <td class="px-6 py-4 flex gap-4">
+                        <a href="#">
+                            ✏️
+                        </a>
+                        <form method="POST"
+                              action="{{ path('todo_categories_delete') }}"
+                              hx-post="{{ path('partial_todo_categories_delete') }}"
+                              hx-target="#todo-category-{{ category.id }}"
+                              hx-swap="outerHTML"
+                              hx-confirm="Vai esi drošs, ka vēlies dzēst šo kategoriju?"
+                        >
+                            <input type="hidden" name="id" value="{{ category.id }}">
+                            <button type="submit">
+                                🗑️
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -16,14 +16,19 @@
                     <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
                         <li>
                             <a href="{{ path('home') }}"
-                               class="block py-2 px-3 md:p-0 text-white {{ app.request.attributes.get('_route') == 'home' ? 'underline' : '' }}"
+                               hx-get="{{ path('partial_videos') }}"
+                               hx-target="#main"
+                               hx-replace-url="{{ path('home') }}"
+                               onclick="setActiveLink(this)"
+                               data-url="{{ path('home') }}"
+                               class="nav-link block py-2 px-3 md:p-0 text-white {{ app.request.attributes.get('_route') == 'home' ? 'underline' : '' }}"
                                     {{ app.request.attributes.get('_route') == 'home' ? 'aria-current="page"': '' }}>
                                 Videoklipu katalogs
                             </a>
                         </li>
                         <li>
                             <a href="{{ path('logout') }}"
-                               class="block py-2 px-3 md:p-0 text-white {{ app.request.attributes.get('_route') == 'logout' ? 'underline' : '' }}"
+                               class="nav-link block py-2 px-3 md:p-0 text-white {{ app.request.attributes.get('_route') == 'logout' ? 'underline' : '' }}"
                                     {{ app.request.attributes.get('_route') == 'logout' ? 'aria-current="page"': '' }}>
                                 Beigt darbu
                             </a>
@@ -31,7 +36,13 @@
                     </ul>
                 </div>
             {% endif %}
-            <a href="{{ path('home') }}" class="self-center text-2xl font-semibold whitespace-nowrap">
+            <a href="{{ path('home') }}"
+               hx-get="{{ path('partial_videos') }}"
+               hx-target="#main"
+               hx-replace-url="{{ path('home') }}"
+               onclick="setActiveLink('/')"
+               data-url="{{ path('home') }}"
+               class="self-center text-2xl font-semibold whitespace-nowrap">
                 VideoPlatforma
             </a>
         </div>

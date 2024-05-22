@@ -1,0 +1,74 @@
+<div class="pb-16">
+    <div class="relative">
+        <img src="{{ images.mob }}"
+             srcset="{{ images.mob }} 360w, {{ images.desk }}"
+             alt="Banner"
+             class="w-full h-[450px] sm:h-96 object-cover">
+        <div class="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="text-center">
+                <h1 class="mb-4 text-white text-xl sm:text-4xl font-bold">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                </h1>
+                <div class="flex">
+                    <div class="mb-6 text-white sm:text-lg max-w-md mx-auto">
+                        <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi atque autem
+                            blanditiis
+                            ducimus eligendi id numquam tempora! Aperiam, distinctio, velit. Architecto atque
+                            delectus
+                            error magni odit quae, ratione sunt voluptatibus!</p>
+                        <a href="{{ path('catalogue') }}"
+                           hx-get="{{ path('catalogue_body', {'page': 1}) }}"
+                           hx-target="#main"
+                           hx-replace-url="{{ path('catalogue') }}"
+                           onclick="setActiveLink('catalogue')"
+                           class="bg-white text-black px-8 py-3 text-sm font-semibold rounded hover:bg-gray-200">
+                            Apskatīt
+                        </a>
+                    </div>
+                    <div class="mb-6 text-white sm:text-lg max-w-md mx-auto">
+                        <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet
+                            doloribus,
+                            facilis iusto laborum, laudantium maiores necessitatibus, nesciunt numquam possimus
+                            quasi
+                            recusandae rerum totam vero.</p>
+                        <a href="{{ path('catalogue') }}"
+                           hx-get="{{ path('catalogue_body', {'page': 1}) }}"
+                           hx-target="#main"
+                           hx-replace-url="{{ path('catalogue') }}"
+                           onclick="setActiveLink('catalogue')"
+                           class="bg-white text-black px-8 py-3 text-sm font-semibold rounded hover:bg-gray-200">
+                            Apskatīt
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-16">
+        <h2 class="text-3xl font-bold mb-4">Jaunākie produkti</h2>
+        <div class="flex flex-wrap gap-4 justify-center">
+            {% for product in newProducts %}
+                {{ include('partials/product-card.html.twig', { product: product }) }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="text-center mt-16">
+        <h2 class="text-3xl font-bold mb-4">Populārākie produkti</h2>
+        <div class="flex flex-wrap gap-4 justify-center">
+            {% for product in popularProducts %}
+                {{ include('partials/product-card.html.twig', { product: product }) }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="text-center mt-16">
+        <h2 class="text-3xl font-bold mb-4">Produkti ar atlaidēm</h2>
+        <div class="flex flex-wrap gap-4 justify-center">
+            {% for product in productsWithDiscounts %}
+                {{ include('partials/product-card.html.twig', { product: product }) }}
+            {% endfor %}
+        </div>
+    </div>
+</div>

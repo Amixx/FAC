@@ -1,5 +1,10 @@
 <li class="bg-gradient-to-r from-blue-600/75 to-red-600/75 rounded-xl shadow-xl p-6 flex flex-col justify-between leading-relaxed border border-gray-300 transform transition-transform hover:scale-105">
-    <a href="{{ path('video', {'id': video.id}) }}" class="cursor-pointer">
+    <a href="{{ path('video', {'id': video.id}) }}"
+       hx-get="{{ path('partial_video', {'id': video.id}) }}"
+       hx-target="#main"
+       hx-push-url="{{ path('video', {'id': video.id}) }}"
+       onclick="setActiveLink(null)"
+       class="cursor-pointer">
         <div class="flex gap-4 justify-between mb-4 items-center">
             <div class="text-xs text-white">
                 <p class="italic">Publicēts: {{ video.createdAt|date('Y-m-d H:i') }}</p>
